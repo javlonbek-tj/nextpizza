@@ -4,7 +4,7 @@ import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants';
 import './globals.css';
 
 const nunito = Nunito({
-  subsets: ['latin'],
+  subsets: ['cyrillic'],
   variable: '--font-nunito',
   weight: ['400', '500', '600', '700', '800', '900'],
 });
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={`${nunito.className} antialiased`}>{children}</body>
     </html>
   );

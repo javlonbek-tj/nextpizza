@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/shared/Header.jsx"
+    "components/shared/Header.tsx"
   ],
   "exclude": ["node_modules"]
 }

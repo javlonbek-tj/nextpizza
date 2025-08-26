@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
+import { Header } from '@/components/shared/Header';
 
 export default function Home() {
-  return <Button variant='outline'>Click me</Button>;
+  return <Header />;
 }
