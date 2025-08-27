@@ -1,0 +1,86 @@
+'use client';
+
+import { cn } from '@/lib/utils';
+import { FilterCheckbox } from './Filter-checkbox';
+import { useState } from 'react';
+import { Input } from '../ui/input';
+
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  className?: string;
+  title?: string;
+  options: Option[];
+  name: string;
+  limit?: number;
+  searchInputPlaceholder?: string;
+}
+
+export function FilterCheckboxGroup({
+  className,
+  title,
+  options,
+  name,
+  limit = 5,
+  searchInputPlaceholder = 'Поиск...',
+}: Props) {
+  const [showAll, setShowAll] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const list = showAll
+    ? options.filter((option) =>
+        option.label.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : options.slice(0, limit);
+
+  return (
+    <div
+      className={cn(
+        'flex flex-col gap-3 max-h-96 overflow-y-auto pr-2 scrollbar',
+        className
+      )}
+    >
+      {/* Sticky header (title + search) */}
+      <div className='sticky top-0 bg-white z-10 pb-2'>
+        {title && <p className='text-md font-bold'>{title}:</p>}
+        {showAll && options.length > limit && (
+          <div className='mt-2 px-1'>
+            <Input
+              placeholder={searchInputPlaceholder}
+              className='bg-gray-50 border-none focus:ring focus:bg-white'
+              onChange={onChangeSearchInput}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Options list */}
+      <div className='flex flex-col gap-2'>
+        {list.map((option) => (
+          <FilterCheckbox
+            key={option.label}
+            label={option.label}
+            value={option.value}
+            name={name}
+          />
+        ))}
+
+        {options.length > limit && !searchTerm && (
+          <button
+            className='text-sm text-primary cursor-pointer mt-2 self-start'
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? 'Скрыть' : '+ Показать все'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

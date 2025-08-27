@@ -1,0 +1,27 @@
+import { cn } from '@/lib/utils';
+import { Checkbox } from '../ui/checkbox';
+
+interface Props {
+  className?: string;
+  label: string;
+  value: string;
+  name: string;
+}
+
+export function FilterCheckbox({ className, label, value, name }: Props) {
+  return (
+    <div className={cn('flex items-center gap-3', className)}>
+      <Checkbox
+        id={`checkbox-${String(name)}-${String(value)}`}
+        className='rounded-[8px] w-6 h-6'
+        value={value}
+      />
+      <label
+        htmlFor={`checkbox-${String(name)}-${String(value)}`}
+        className='text-md font-medium cursor-pointer flex-1'
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
