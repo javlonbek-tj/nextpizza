@@ -41,7 +41,7 @@ export function PriceRange({ className, title, min, max, step }: Props) {
           onChange={handleMinChange}
           min={min}
           max={range[1]}
-          className='focus:ring-0 border-none'
+          className='focus:border-none'
         />
         <Input
           type='number'
@@ -49,7 +49,7 @@ export function PriceRange({ className, title, min, max, step }: Props) {
           onChange={handleMaxChange}
           min={range[0]}
           max={max}
-          className='focus:ring-0 border-none'
+          className='focus:border-none'
         />
       </div>
 

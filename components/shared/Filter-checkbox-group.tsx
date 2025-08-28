@@ -43,7 +43,7 @@ export function FilterCheckboxGroup({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 max-h-96 overflow-y-auto pr-2 scrollbar',
+        'flex flex-col gap-3 max-h-96 overflow-y-auto pr-2 scrollbar-thin',
         className
       )}
     >
@@ -54,7 +54,7 @@ export function FilterCheckboxGroup({
           <div className='mt-2 px-1'>
             <Input
               placeholder={searchInputPlaceholder}
-              className='bg-gray-50 border-none focus:ring focus:bg-white'
+              className='bg-gray-50 border-none focus:bg-white'
               onChange={onChangeSearchInput}
             />
           </div>

@@ -4,9 +4,9 @@ import React from 'react';
 type TitleSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 interface Props {
+  text: string;
   size?: TitleSize;
   className?: string;
-  text: string;
 }
 
 export function Title({ text, size = 'sm', className }: Props) {
