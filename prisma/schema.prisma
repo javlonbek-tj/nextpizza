@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma/client"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -51,7 +51,7 @@ model ProductItem {
 
   price     Float
   size      Int?
-  pizzaType String?
+  pizzaType Int?
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -71,6 +71,9 @@ model Category {
 model Ingredient {
   id   Int    @id @default(autoincrement())
   name String @unique
+
+  price    Float
+  imageUrl String
 
   products    Product[]
   ingredients CartItem[]
