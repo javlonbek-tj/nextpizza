@@ -32,7 +32,7 @@ model Product {
   name     String
   imageUrl String
 
-  ProductItem ProductItem[]
+  productItems  ProductItem[]
 
   Category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
@@ -55,7 +55,7 @@ model ProductItem {
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  CartItem  CartItem[]
+  cartItems   CartItem[]
 }
 
 model Category {
