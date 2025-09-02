@@ -1,10 +1,9 @@
-'use client'
-import { cn } from '@/lib/utils';
-
+'use client';
+import { cn } from '@/lib';
 import { Title } from './Title';
 import { FilterCheckboxGroup } from './Filter-checkbox-group';
 import { PriceRange } from './Price-range';
-import { useIngredients } from './hooks/use-ingredients';
+import { useIngredients } from './hooks';
 
 interface Props {
   className?: string;
@@ -12,9 +11,12 @@ interface Props {
 
 export function Filters({ className }: Props) {
   // TODO: add loading state
-  const {data: ingredients, isPending} = useIngredients();
+  const { data: ingredients, isPending } = useIngredients();
 
-  const options = ingredients.map((item) => ({ label: item.name, value: String(item.id) }));
+  const options = ingredients.map((item) => ({
+    label: item.name,
+    value: String(item.id),
+  }));
   return (
     <div className={cn(className)}>
       <Title text='Фильтрация' size='sm' className='mb-5 font-bold' />

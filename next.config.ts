@@ -1,6 +1,5 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
       {
@@ -8,8 +7,13 @@ const nextConfig: NextConfig = {
         hostname: 'media.dodostatic.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.dodostatic.net',
+        pathname: '/**',
+      },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

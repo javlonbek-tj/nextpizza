@@ -1,9 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { FilterCheckbox } from './Filter-checkbox';
 import { useState } from 'react';
+import { cn } from '@/lib';
 import { Input } from '../ui/input';
+import { FilterCheckbox } from './Filter-checkbox';
 
 interface Option {
   label: string;
@@ -48,7 +48,7 @@ export function FilterCheckboxGroup({
       )}
     >
       {/* Sticky header (title + search) */}
-      <div className='sticky top-0 bg-white z-10 pb-2'>
+      <div className='sticky top-0 bg-white z-2 pb-2'>
         {title && <p className='text-md font-bold'>{title}:</p>}
         {showAll && options.length > limit && (
           <div className='mt-2 px-1'>

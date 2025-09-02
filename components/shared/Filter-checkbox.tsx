@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { Checkbox } from '../ui/checkbox';
 
 interface Props {

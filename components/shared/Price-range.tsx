@@ -1,7 +1,7 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { cn } from '@/lib';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
 

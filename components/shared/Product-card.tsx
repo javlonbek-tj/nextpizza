@@ -1,17 +1,22 @@
-import { cn } from '@/lib/utils';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Title } from './Title';
 import { Button } from '../ui/button';
-import { Plus } from 'lucide-react';
+import { Ingredient, ProductItem } from '@/generated/prisma/client';
 
 interface Props {
   className?: string;
-  product: any; // TODO: replace with actual product type
+  id: number;
+  imageUrl: string;
+  name: string;
+  ingredients: Ingredient[];
+  productItems: ProductItem[];
 }
 
-export function ProductCard({ className, product }: Props) {
+export function ProductCard({ className, ingredients, ...product }: Props) {
   return (
-    <div className={cn('flex flex-col', className)}>
+    <Link href={`/product/${product.id}`} className={className}>
       <div className='flex justify-center p-6 bg-secondary rounded-lg h-[260px]'>
         <Image
           src={product.imageUrl}
@@ -21,19 +26,16 @@ export function ProductCard({ className, product }: Props) {
         />
       </div>
 
-      {/* Content below */}
       <div className='flex flex-col flex-1 mt-4'>
         <Title
           text={product.name}
           size='sm'
-          className='font-bold leading-tight line-clamp-2'
+          className='font-bold leading-tight line-clamp-1 mb-2'
         />
 
-        {product.ingredients.length > 0 && (
-          <p className='text-sm text-gray-400 mt-2 line-clamp-2'>
-            {product.ingredients
-              .map((ingredient) => ingredient.name)
-              .join(', ')}
+        {ingredients.length > 0 && (
+          <p className='text-sm text-gray-400 line-clamp-2'>
+            {ingredients.map((ingredient) => ingredient.name).join(', ')}
           </p>
         )}
 
@@ -47,6 +49,6 @@ export function ProductCard({ className, product }: Props) {
           </Button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,9 +1,10 @@
 import Image from 'next/image';
+import { ArrowRight, ShoppingCart, User } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import { Container } from './Container';
 import { Button } from '../ui/button';
-import { ArrowRight, ShoppingCart, User } from 'lucide-react';
+import { SearchInput } from './Search-input';
 
 interface Props {
   className?: string;
@@ -22,6 +23,9 @@ export function Header({ className }: Props) {
             </p>
           </div>
         </div>
+
+        <SearchInput />
+
         <div className='flex items-center gap-4'>
           <Button
             variant={'outline'}

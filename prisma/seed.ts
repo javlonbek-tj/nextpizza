@@ -1,4 +1,4 @@
-import { prisma } from './prisma-client';
+import prisma from './prisma-client';
 import { hashSync } from 'bcrypt';
 import { categories, _ingredients, products } from './constants';
 
@@ -23,7 +23,7 @@ const generateProductItem = ({
   };
 };
 async function down() {
-   await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "CartItem" RESTART IDENTITY CASCADE`;
@@ -33,7 +33,7 @@ async function down() {
 }
 
 async function up() {
-await prisma.user.createMany({
+  await prisma.user.createMany({
     data: [
       {
         fullName: 'User Test',
@@ -56,11 +56,11 @@ await prisma.user.createMany({
     data: categories,
   });
 
-   await prisma.ingredient.createMany({
+  await prisma.ingredient.createMany({
     data: _ingredients,
   });
 
-   await prisma.product.createMany({
+  await prisma.product.createMany({
     data: products,
   });
 
@@ -141,7 +141,7 @@ await prisma.user.createMany({
     ],
   });
 
-   await prisma.cart.createMany({
+  await prisma.cart.createMany({
     data: [
       {
         userId: 1,
@@ -166,7 +166,6 @@ await prisma.user.createMany({
       },
     },
   });
-
 }
 
 async function main() {
