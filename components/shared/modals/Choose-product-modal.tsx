@@ -15,16 +15,11 @@ interface Props {
 export function ChooseProductModal({ className, product }: Props) {
   const router = useRouter();
 
-  const handleClose = () => {
-    router.back();
-  };
   return (
-    <Dialog open={true} onOpenChange={handleClose}>
+    <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
       <DialogContent
-        className={cn(
-          'bg-white max-w-[1060px] min-h-[500px] overflow-hidden',
-          className
-        )}
+        size='xl'
+        className={cn('min-h-[500px] p-0 overflow-hidden', className)}
       >
         <ProductForm product={product} />
       </DialogContent>
