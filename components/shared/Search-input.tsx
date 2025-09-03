@@ -36,20 +36,20 @@ export function SearchInput({ className }: Props) {
   return (
     <>
       {focused && (
-        <div className='fixed top-0 left-0 bottom-0 right-0 bg-black/50 z-100' />
+        <div className="top-0 right-0 bottom-0 left-0 z-40 fixed bg-black/50" />
       )}
       <div
         ref={ref}
         className={cn(
-          'flex-1 mx-10 rounded-2xl flex items-center px-5 py-3 bg-gray-100 relative z-100 transition duration-300',
+          'z-40 relative flex flex-1 items-center bg-gray-100 mx-10 px-5 py-3 rounded-2xl transition duration-300',
           className
         )}
       >
-        <Search className='text-gray-400 h-5' />
+        <Search className="h-5 text-gray-400" />
         <input
-          type='text'
-          className='w-full outline-none pl-5'
-          placeholder='Найти пиццу...'
+          type="text"
+          className="pl-5 outline-none w-full"
+          placeholder="Найти пиццу..."
           onFocus={() => setFocused(true)}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -57,7 +57,7 @@ export function SearchInput({ className }: Props) {
         {searchedProducts && searchedProducts.length > 0 && (
           <div
             className={cn(
-              'absolute left-0 right-0 top-14 bg-white rounded-xl shadow-md transition-all duration-200 max-h-96 overflow-y-auto z-[100] origin-top',
+              'top-14 right-0 left-0 z-[100] absolute bg-white shadow-md rounded-xl max-h-96 overflow-y-auto origin-top transition-all duration-200',
               focused
                 ? 'opacity-100 scale-100'
                 : 'opacity-0 scale-95 pointer-events-none'
@@ -67,12 +67,12 @@ export function SearchInput({ className }: Props) {
               <Link
                 key={product.id}
                 href={`/product/${product.id}`}
-                className='flex items-center gap-3 py-2 hover:bg-orange-50 px-3 w-full transition duration-200'
+                className="flex items-center gap-3 hover:bg-orange-50 px-3 py-2 w-full transition duration-200"
               >
                 <Image
                   src={product.imageUrl}
                   alt={product.name}
-                  className='w-8 h-8 rounded-full'
+                  className="rounded-full w-8 h-8"
                   width={32}
                   height={32}
                 />
