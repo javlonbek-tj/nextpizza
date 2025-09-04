@@ -1,9 +1,9 @@
 import { mapPizzaType, PizzaSize } from './../../../constants/pizza';
-import { useEffect, useState } from 'react';
 import { ProductWithRelations } from '@/@types/prisma';
 import { pizzaSizes, PizzaType } from '@/constants/pizza';
 import { Variant } from '../Group-variants';
 import { useSet } from 'react-use';
+import { useState } from 'react';
 
 interface ReturnProps {
   type: PizzaType;
@@ -26,27 +26,31 @@ export const usePizzaOptions = (product: ProductWithRelations): ReturnProps => {
     new Set<number>([])
   );
 
-  const availablePizzaSizes = product.productItems
+  const availableSizes = product.productItems
     .filter((item) => item.pizzaType === type)
     .map((item) => {
       return { size: item.size };
     });
+  const handleTypeChange = (newType: PizzaType) => {
+    const newAvailableSizes = product.productItems
+      .filter((item) => item.pizzaType === newType)
+      .map((item) => ({ size: item.size }));
 
-  useEffect(() => {
-    const isAvailableSize = availablePizzaSizes?.find(
+    const isCurrentSizeAvailable = newAvailableSizes.find(
       (item) => item.size === size
     );
-    if (!isAvailableSize) {
-      setSize(availablePizzaSizes[0].size as PizzaSize);
+
+    setType(newType);
+    if (!isCurrentSizeAvailable && newAvailableSizes.length > 0) {
+      setSize(newAvailableSizes[0].size as PizzaSize);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+  };
 
   const allPizzaSizes = pizzaSizes.map(({ name, value }): Variant => {
     return {
       name,
       value,
-      disabled: !availablePizzaSizes.some((item) => item.size === value),
+      disabled: !availableSizes.some((item) => item.size === value),
     };
   });
 
@@ -54,7 +58,7 @@ export const usePizzaOptions = (product: ProductWithRelations): ReturnProps => {
 
   return {
     type,
-    setType,
+    setType: handleTypeChange,
     size,
     setSize,
     allPizzaSizes,

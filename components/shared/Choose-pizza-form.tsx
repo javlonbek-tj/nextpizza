@@ -11,6 +11,7 @@ import { usePizzaOptions } from './hooks/use-pizza-options';
 import { GroupVariants } from './Group-variants';
 import { IngredientItem } from './Ingredient';
 import { Button } from '../ui/button';
+import { totalProductPrice } from '@/lib';
 
 interface Props {
   className?: string;
@@ -28,6 +29,13 @@ export function ChoosePizzaForm({ className, product }: Props) {
     addIngredient,
     description,
   } = usePizzaOptions(product);
+
+  const totalPrice = totalProductPrice(
+    product.productItems,
+    type,
+    size,
+    selectedIngredients
+  );
   return (
     <div className={cn('flex items-center', className)}>
       <PizzaImage imageUrl={product.imageUrl} size={size} />
@@ -60,7 +68,7 @@ export function ChoosePizzaForm({ className, product }: Props) {
         </div>
 
         <Button className='mt-5 w-full py-5 cursor-pointer'>
-          Добавить в корзину за 576 ₽
+          Добавить в корзину за {totalPrice} ₽
         </Button>
       </div>
     </div>
