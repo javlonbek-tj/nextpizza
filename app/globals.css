@@ -16,6 +16,12 @@ html {
 }
 
 :root {
+  body[data-scroll-locked][data-scroll-locked] {
+    overflow: auto !important; /* Ensures scrollbar remains */
+  }
+  body[data-scroll-locked] {
+    margin-right: 0 !important; /* Prevents shifting if scrollbar space is removed */
+  }
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
