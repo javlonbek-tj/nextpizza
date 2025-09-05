@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib';
-import { ProductForm } from '../Product-form';
+import { ProductForm } from '../shared/Product-form';
 
 import { ProductWithRelations } from '@/@types/prisma';
 import { useRouter } from 'next/navigation';
@@ -18,8 +18,8 @@ export function ChooseProductModal({ className, product }: Props) {
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
       <DialogContent
-        size='xl'
-        className={cn('min-h-[500px] p-0 overflow-hidden', className)}
+        size="xl"
+        className={cn('p-0 min-h-[500px] overflow-hidden', className)}
       >
         <ProductForm product={product} />
       </DialogContent>

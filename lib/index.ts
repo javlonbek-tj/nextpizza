@@ -1,3 +1,3 @@
-export { findPizzas } from './find-pizzas';
+export { findPizzas } from './product/find-pizzas';
 export { cn } from './utils';
-export { totalProductPrice } from './cal-total-product-price';
+export { totalProductPrice } from './product/cal-total-product-price';

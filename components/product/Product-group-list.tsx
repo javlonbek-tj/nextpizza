@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useIntersection } from 'react-use';
 import { cn } from '@/lib';
-import { Title } from './Title';
+import { Title } from '../shared/Title';
 import { ProductCard } from './Product-card';
 import { ProductWithRelations } from '@/@types/prisma';
 import { useCategoryStore } from '@/store/category';
@@ -42,9 +42,9 @@ export function ProductGroupList({
       id={categoryTitle}
       ref={intersectionRef}
     >
-      <Title text={categoryTitle} size='lg' className='font-extrabold mb-5' />
+      <Title text={categoryTitle} size="lg" className="mb-5 font-extrabold" />
 
-      <div className={cn('grid grid-cols-3 gap-8', listClassName)}>
+      <div className={cn('gap-8 grid grid-cols-3', listClassName)}>
         {products.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}

@@ -1,7 +1,7 @@
-import { mapPizzaType, PizzaSize } from './../../../constants/pizza';
+import { mapPizzaType, PizzaSize } from '../../constants/pizza';
 import { ProductWithRelations } from '@/@types/prisma';
 import { pizzaSizes, PizzaType } from '@/constants/pizza';
-import { Variant } from '../Group-variants';
+import { Variant } from '../product/Group-variants';
 import { useSet } from 'react-use';
 import { useState } from 'react';
 

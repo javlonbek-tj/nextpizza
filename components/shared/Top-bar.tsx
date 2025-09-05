@@ -1,6 +1,6 @@
 import { cn } from '@/lib';
-import { Categories } from './Categories';
-import { SortPopup } from './Sort-popup';
+import { Categories } from '../categories/Categories';
+import { SortPopup } from '../filters/Sort-popup';
 import { Category } from '@/generated/prisma/client';
 import { Container } from './Container';
 
@@ -13,11 +13,11 @@ export function TopBar({ className, categories }: Props) {
   return (
     <div
       className={cn(
-        'sticky top-0 bg-white shadow-lg shadow-black/5 z-10 py-5',
+        'top-0 z-10 sticky bg-white shadow-black/5 shadow-lg py-5',
         className
       )}
     >
-      <Container className='flex justify-between items-center gap-5 '>
+      <Container className="flex justify-between items-center gap-5">
         <Categories categories={categories} />
         <SortPopup />
       </Container>

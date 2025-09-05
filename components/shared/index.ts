@@ -1,13 +1,4 @@
-export { Categories } from './Categories';
 export { Container } from './Container';
-export { FilterCheckboxGroup } from './Filter-checkbox-group';
-export { FilterCheckbox } from './Filter-checkbox';
-export { Filters } from './Filters';
 export { Header } from './Header';
-export { PriceRange } from './Price-range';
-export { ProductCard } from './Product-card';
-export { ProductGroupList } from './Product-group-list';
-export { SearchInput } from './Search-input';
-export { SortPopup } from './Sort-popup';
 export { Title } from './Title';
 export { TopBar } from './Top-bar';

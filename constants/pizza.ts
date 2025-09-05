@@ -1,4 +1,4 @@
-import { Variant } from '@/components/shared/Group-variants';
+import { Variant } from '@/components/product/Group-variants';
 
 export const mapPizzaSize = {
   20: 'Маленькая',
