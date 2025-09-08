@@ -10,8 +10,8 @@ interface Props {
 }
 
 export function Filters({ className }: Props) {
-  // TODO: add loading state
-  const { data: ingredients, isPending } = useIngredients();
+  // TODO: add loading state and error state
+  const { data: ingredients, isPending, isError } = useIngredients();
 
   const options = ingredients.map((item) => ({
     label: item.name,

@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react';
 import { useIntersection } from 'react-use';
 import { cn } from '@/lib';
-import { Title } from '../shared/Title';
+import { Title } from '../shared';
 import { ProductCard } from './Product-card';
-import { ProductWithRelations } from '@/@types/prisma';
+import { ProductWithRelations } from '@/prisma/@types/prisma';
 import { useCategoryStore } from '@/store/category';
 
 interface Props {

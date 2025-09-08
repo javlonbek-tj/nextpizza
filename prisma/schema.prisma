@@ -90,8 +90,6 @@ model Cart {
 
   token String
 
-  totalAmount Int @default(0)
-
   items CartItem[]
 
   createdAt DateTime @default(now())

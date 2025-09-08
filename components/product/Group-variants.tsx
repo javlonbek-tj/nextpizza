@@ -1,4 +1,4 @@
-import { PizzaSize, PizzaType } from '@/constants/pizza';
+import { PizzaSize, PizzaType } from '@/constants';
 import { cn } from '@/lib';
 
 interface Props {
@@ -25,7 +25,7 @@ export function GroupVariants({ className, variants, value, onClick }: Props) {
       {variants.map((variant) => (
         <button
           key={variant.value}
-          type='button'
+          type="button"
           aria-pressed={variant.value === value}
           disabled={variant.disabled}
           className={cn(

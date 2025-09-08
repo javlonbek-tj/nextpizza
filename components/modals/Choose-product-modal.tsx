@@ -2,10 +2,11 @@
 
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib';
-import { ProductForm } from '../shared/Product-form';
+import { ProductForm } from '../product';
 
-import { ProductWithRelations } from '@/@types/prisma';
+import { ProductWithRelations } from '@/prisma/@types/prisma';
 import { useRouter } from 'next/navigation';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 interface Props {
   className?: string;
@@ -21,7 +22,11 @@ export function ChooseProductModal({ className, product }: Props) {
         size="xl"
         className={cn('p-0 min-h-[500px] overflow-hidden', className)}
       >
-        <ProductForm product={product} />
+        {/* Hidden title for accessibility */}
+        <DialogTitle className="sr-only">
+          Choose {product?.name || 'Product'}
+        </DialogTitle>
+        <ProductForm product={product} onClose={() => router.back()} />
       </DialogContent>
     </Dialog>
   );

@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Title } from './Title';
+import { Title } from '../shared';
 import { Button } from '../ui/button';
 import { Ingredient, ProductItem } from '@/generated/prisma/client';
 

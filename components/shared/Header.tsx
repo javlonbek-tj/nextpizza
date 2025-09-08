@@ -5,8 +5,8 @@ import { cn } from '@/lib';
 import { Container } from './Container';
 import { Button } from '../ui/button';
 import { SearchInput } from '../filters/Search-input';
-import { CartButton } from '../cart/Cart-button';
-import { CartDrawer } from './Cart-drawer';
+import { CartButton } from '../cart/';
+import { CartDrawer } from '../cart';
 
 interface Props {
   className?: string;

@@ -20,25 +20,25 @@ export function IngredientItem({
   return (
     <div
       className={cn(
-        'flex flex-col relative items-center gap-3 bg-white rounded-3xl p-1 cursor-pointer border border-transparent',
+        'relative flex flex-col items-center gap-3 bg-white p-1 border border-transparent rounded-3xl h-[180px] cursor-pointer',
         { 'border border-primary': active },
         className
       )}
       onClick={onClick}
     >
       {active && (
-        <span className='border border-primary absolute top-2 right-2 h-5 w-5 rounded-full flex items-center justify-center'>
-          <Check className='h-4 w-4 text-primary' />
+        <span className="top-2 right-2 absolute flex justify-center items-center border border-primary rounded-full w-5 h-5">
+          <Check className="w-4 h-4 text-primary" />
         </span>
       )}
       <Image
         src={ingredient.imageUrl}
-        width={100}
-        height={100}
+        width={80}
+        height={80}
         alt={ingredient.name}
       />
-      <p className='leading-none text-center'>{ingredient.name}</p>
-      <p className='mt-auto'>{ingredient.price} ₽</p>
+      <p className="text-center leading-none">{ingredient.name}</p>
+      <p className="mt-auto">{ingredient.price} ₽</p>
     </div>
   );
 }
