@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { Api } from '@/services/api-client';
 import { getCartDetails } from '@/lib/cart';
 import { AddToCartDto } from '@/services/dto/cart.dto';
@@ -39,9 +40,8 @@ export function useRemoveCartItem() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart });
     },
-    onError: (error) => {
-      // TODO ADD TOAST AND REMOVE CONSOLE
-      console.error('Failed to remove cart item:', error);
+    onError: () => {
+      toast.error('Не удалось удалить товар из корзины');
     },
   });
 }
@@ -53,10 +53,10 @@ export function useAddToCart() {
     mutationFn: (vars: AddToCartDto) => Api.cart.addToCart(vars),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart });
+      toast.success('Товар добавлен в корзину 🛒');
     },
-    onError: (error) => {
-      // TODO ADD TOAST AND REMOVE CONSOLE
-      console.error('Failed to add to cart:', error);
+    onError: () => {
+      toast.error('Не удалось добавить в корзину');
     },
   });
 }

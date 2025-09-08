@@ -87,11 +87,11 @@ export async function DELETE(
       return NextResponse.json({ error: 'Cart not found.' }, { status: 404 });
     }
 
-    const cartItemId = await parseInt(params.id);
+    const cartItemId = await params.id;
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
-        id: cartItemId,
+        id: parseInt(cartItemId),
         cart: { token },
       },
     });
