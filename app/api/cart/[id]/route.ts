@@ -21,7 +21,9 @@ export async function PATCH(
       return NextResponse.json({ error: 'Invalid quantity' }, { status: 400 });
     }
 
-    const cartItemId = await parseInt(params.id);
+    const param = await params;
+
+    const cartItemId = await parseInt(param.id);
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
@@ -87,11 +89,13 @@ export async function DELETE(
       return NextResponse.json({ error: 'Cart not found.' }, { status: 404 });
     }
 
-    const cartItemId = await params.id;
+    const param = await params;
+
+    const cartItemId = await parseInt(param.id);
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
-        id: parseInt(cartItemId),
+        id: cartItemId,
         cart: { token },
       },
     });

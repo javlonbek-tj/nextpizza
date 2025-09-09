@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader } from 'lucide-react';
 import { CartDrawerItem } from '../cart';
 
 import { calculateTotalAmount, getCartItemDetails } from '@/lib/cart';
@@ -20,8 +20,15 @@ import Image from 'next/image';
 import { Title } from '../shared';
 import { cn } from '@/lib';
 
+import { useIsMutating } from '@tanstack/react-query';
+import { queryKeys } from '@/constants';
+
 export function CartDrawer({ children }: PropsWithChildren) {
   const { data, isPending, isError } = useCart();
+  const isDeleting =
+    useIsMutating({
+      mutationKey: queryKeys.removeCartItem,
+    }) > 0;
 
   const totalAmount = data ? calculateTotalAmount(data) : 0;
 
@@ -49,28 +56,28 @@ export function CartDrawer({ children }: PropsWithChildren) {
           )}
 
           {!totalAmount && (
-            <div className="flex flex-col justify-center items-center mx-auto w-72">
+            <div className='flex flex-col justify-center items-center mx-auto w-72'>
               <Image
-                src="/assets/images/empty-box.png"
-                alt="Empty cart"
+                src='/assets/images/empty-box.png'
+                alt='Empty cart'
                 width={120}
                 height={120}
               />
               <Title
-                size="sm"
-                text="Корзина пустая"
-                className="my-2 font-bold text-center"
+                size='sm'
+                text='Корзина пустая'
+                className='my-2 font-bold text-center'
               />
-              <p className="mb-5 text-neutral-500 text-center">
+              <p className='mb-5 text-neutral-500 text-center'>
                 Добавьте хотя бы одну пиццу, чтобы совершить заказ
               </p>
 
               <SheetClose>
                 <Button
-                  className="w-56 h-12 text-base cursor-pointer"
-                  size="lg"
+                  className='w-56 h-12 text-base cursor-pointer'
+                  size='lg'
                 >
-                  <ArrowLeft className="mr-2 w-5" />
+                  <ArrowLeft className='mr-2 w-5' />
                   Вернуться назад
                 </Button>
               </SheetClose>
@@ -79,7 +86,7 @@ export function CartDrawer({ children }: PropsWithChildren) {
 
           {totalAmount > 0 && (
             <>
-              <div className="flex flex-col gap-4 overflow-auto scrollbar-thin">
+              <div className='flex flex-col gap-4 overflow-auto scrollbar-thin'>
                 {data?.map((item) => (
                   <CartDrawerItem
                     key={item.id}
@@ -93,14 +100,24 @@ export function CartDrawer({ children }: PropsWithChildren) {
                 ))}
               </div>
 
-              <SheetFooter className="bg-white p-6">
-                <div className="flex justify-between items-center gap-4 mb-4">
+              <SheetFooter className='bg-white p-6'>
+                <div className='flex justify-between items-center gap-4 mb-4'>
                   <span>Итого</span>
-                  <span className="top-1 relative flex-1 border-b border-b-neutral-200 border-dashed"></span>
-                  <span className="font-bold">{totalAmount} ₽</span>
+                  <span className='top-1 relative flex-1 border-b border-b-neutral-200 border-dashed'></span>
+                  <span className='font-bold'>{totalAmount} ₽</span>
                 </div>
-                <Button className="h-12 cursor-pointer">
-                  Оформить заказ <ArrowRight className="ml-3" />
+                <Button
+                  className='h-12 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <Loader className='w-5 h-5 animate-spin' />
+                  ) : (
+                    <>
+                      <ArrowRight className='mr-2 w-5' />
+                      Оформить заказ
+                    </>
+                  )}
                 </Button>
               </SheetFooter>
             </>

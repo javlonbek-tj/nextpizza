@@ -12,6 +12,7 @@ import { GroupVariants } from './Group-variants';
 import { IngredientItem } from './Ingredient';
 import { Button } from '../ui/button';
 import { useAddToCart } from '../hooks/use-cart';
+import { Loader } from 'lucide-react';
 
 interface Props {
   className?: string;
@@ -37,7 +38,7 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
 
   const { mutate: addToCart, isPending } = useAddToCart();
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (selectedPizzaItemId) {
       addToCart({
         productItemId: selectedPizzaItemId,
@@ -56,16 +57,16 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
           className
         )}
       >
-        <div className="p-8 text-center">
-          <Title text="Продукт недоступен" size="md" className="text-red-600" />
-          <p className="mt-2 text-gray-500">{error}</p>
-          <p className="mt-4 text-gray-400 text-sm">
+        <div className='p-8 text-center'>
+          <Title text='Продукт недоступен' size='md' className='text-red-600' />
+          <p className='mt-2 text-gray-500'>{error}</p>
+          <p className='mt-4 text-gray-400 text-sm'>
             Обратитесь к администратору для исправления конфигурации товара
           </p>
           <Button
             onClick={onClose}
-            variant="outline"
-            className="mt-4 cursor-pointer"
+            variant='outline'
+            className='mt-4 cursor-pointer'
           >
             Закрыть
           </Button>
@@ -77,28 +78,28 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
   return (
     <div className={cn('flex items-center', className)}>
       <PizzaImage imageUrl={product.imageUrl} size={size} />
-      <div className="flex-1 bg-[#f7f6f5] p-7 h-full">
-        <Title text={product.name} size="md" />
+      <div className='flex-1 bg-[#f7f6f5] p-7 h-full'>
+        <Title text={product.name} size='md' />
 
-        <p className="text-gray-400">{description}</p>
+        <p className='text-gray-400'>{description}</p>
 
         <GroupVariants
           variants={allPizzaSizes}
           value={size}
           onClick={(value) => setSize(value as PizzaSize)}
-          className="mt-4"
+          className='mt-4'
         />
 
         <GroupVariants
           variants={pizzaTypes}
           value={type}
           onClick={(value) => setType(value as PizzaType)}
-          className="mt-3"
+          className='mt-3'
         />
 
-        <Title text="Ингредиенты" size="xs" className="mt-4" />
+        <Title text='Ингредиенты' size='xs' className='mt-4' />
 
-        <div className="gap-2 grid grid-cols-3 mt-4 h-[400px] overflow-y-scroll scrollbar-thin">
+        <div className='gap-2 grid grid-cols-3 mt-4 h-[400px] overflow-y-scroll scrollbar-thin'>
           {product.ingredients.map((ingredient) => (
             <IngredientItem
               ingredient={ingredient}
@@ -111,13 +112,15 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
         </div>
 
         <Button
-          className="mt-5 py-5 w-full cursor-pointer"
+          className='mt-5 py-5 w-full cursor-pointer'
           disabled={isPending}
           onClick={handleAddToCart}
         >
-          {isPending
-            ? 'Добавляем...'
-            : `Добавить в корзину за ${totalPrice.toFixed(2)} ₽`}
+          {isPending ? (
+            <Loader className='w-5 h-5 animate-spin' />
+          ) : (
+            `Добавить в корзину за ${totalPrice.toFixed(2)} ₽`
+          )}
         </Button>
       </div>
     </div>

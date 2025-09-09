@@ -4,11 +4,13 @@ import { Api } from '@/services/api-client';
 import { getCartDetails } from '@/lib/cart';
 import { AddToCartDto } from '@/services/dto/cart.dto';
 import { queryKeys } from '@/constants';
+import { sleep } from '@/lib';
 
 export function useCart() {
   return useQuery({
     queryKey: queryKeys.cart,
     queryFn: async () => {
+      await sleep(3000);
       const data = await Api.cart.getCart();
       return getCartDetails(data);
     },
@@ -33,8 +35,8 @@ type RemoveCartItemVars = { id: number };
 
 export function useRemoveCartItem() {
   const queryClient = useQueryClient();
-
   return useMutation({
+    mutationKey: queryKeys.removeCartItem,
     mutationFn: async ({ id }: RemoveCartItemVars) =>
       Api.cart.removeCartItem(id),
     onSuccess: () => {
