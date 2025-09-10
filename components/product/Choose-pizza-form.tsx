@@ -119,7 +119,7 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
           {isPending ? (
             <Loader className='w-5 h-5 animate-spin' />
           ) : (
-            `Добавить в корзину за ${totalPrice.toFixed(2)} ₽`
+            `Добавить в корзину за ${totalPrice} ₽`
           )}
         </Button>
       </div>

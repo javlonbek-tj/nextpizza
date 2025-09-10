@@ -5,27 +5,26 @@ import { cn } from '@/lib';
 import { Input } from '../ui/input';
 import { FilterCheckbox } from './Filter-checkbox';
 
-interface Option {
-  label: string;
-  value: string;
-}
-
 interface Props {
-  className?: string;
-  title?: string;
-  options: Option[];
+  options: { label: string; value: string }[];
+  values: string[];
+  onValuesChange: (values: string[]) => void;
+  title: string;
   name: string;
   limit?: number;
   searchInputPlaceholder?: string;
+  className?: string;
 }
 
 export function FilterCheckboxGroup({
-  className,
-  title,
   options,
+  values = [],
+  onValuesChange,
   name,
+  title,
   limit = 5,
   searchInputPlaceholder = 'Поиск...',
+  className,
 }: Props) {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,6 +38,14 @@ export function FilterCheckboxGroup({
         option.label.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : options.slice(0, limit);
+
+  const handleCheckboxChange = (value: string, checked: boolean) => {
+    const newValues = checked
+      ? [...values, value]
+      : values.filter((v) => v !== value);
+
+    onValuesChange?.(newValues);
+  };
 
   return (
     <div

@@ -41,9 +41,18 @@ export function CartDrawer({ children }: PropsWithChildren) {
           !totalAmount && 'flex items-center justify-center'
         )}
       >
-        {/* TODO MAKE MORE NICE LOADING AND ERROR */}
-        {isPending && <p>Loading cart...</p>}
-        {isError && <p>Error loading cart. Please try again.</p>}
+        {isPending && (
+          <div className='flex items-center justify-center h-full'>
+            <Loader className='w-6 h-6 animate-spin' />
+            <span className='ml-2'>Loading cart...</span>
+          </div>
+        )}
+
+        {isError && (
+          <div className='flex items-center justify-center h-full'>
+            <p>Error loading cart. Please try again.</p>
+          </div>
+        )}
         <>
           {totalAmount > 0 && (
             <SheetHeader>
@@ -100,24 +109,19 @@ export function CartDrawer({ children }: PropsWithChildren) {
                 ))}
               </div>
 
-              <SheetFooter className='bg-white p-6'>
+              <SheetFooter
+                className={cn('bg-white p-6', {
+                  'opacity-60 pointer-events-none': isDeleting,
+                })}
+              >
                 <div className='flex justify-between items-center gap-4 mb-4'>
                   <span>Итого</span>
                   <span className='top-1 relative flex-1 border-b border-b-neutral-200 border-dashed'></span>
                   <span className='font-bold'>{totalAmount} ₽</span>
                 </div>
-                <Button
-                  className='h-12 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed'
-                  disabled={isDeleting}
-                >
-                  {isDeleting ? (
-                    <Loader className='w-5 h-5 animate-spin' />
-                  ) : (
-                    <>
-                      <ArrowRight className='mr-2 w-5' />
-                      Оформить заказ
-                    </>
-                  )}
+                <Button className='h-12 cursor-pointer'>
+                  <ArrowRight className='mr-2 w-5' />
+                  Оформить заказ
                 </Button>
               </SheetFooter>
             </>

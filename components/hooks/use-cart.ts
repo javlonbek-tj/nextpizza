@@ -10,7 +10,6 @@ export function useCart() {
   return useQuery({
     queryKey: queryKeys.cart,
     queryFn: async () => {
-      await sleep(3000);
       const data = await Api.cart.getCart();
       return getCartDetails(data);
     },
@@ -39,6 +38,7 @@ export function useRemoveCartItem() {
     mutationKey: queryKeys.removeCartItem,
     mutationFn: async ({ id }: RemoveCartItemVars) =>
       Api.cart.removeCartItem(id),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.cart });
     },

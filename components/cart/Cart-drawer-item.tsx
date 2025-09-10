@@ -27,7 +27,11 @@ export function CartDrawerItem({
   const { mutate: removeCartItem, isPending } = useRemoveCartItem();
   return (
     <div
-      className={cn('flex items-center gap-4 bg-white px-4 py-3', className)}
+      className={cn(
+        'flex items-center gap-4 bg-white px-4 py-3',
+        { 'opacity-50 pointer-events-none': isPending },
+        className
+      )}
     >
       <Image src={imageUrl} alt={name} width={60} height={60} />
       <div className='flex flex-col gap-2'>
@@ -40,14 +44,9 @@ export function CartDrawerItem({
             <CartIconButton type='plus' quantity={quantity} cartItemId={id} />
           </div>
           <div className='flex items-center gap-4'>
-            <span className='font-bold text-sm"'>
-              {totalCartItemPrice.toFixed(2)} ₽
-            </span>
+            <span className='font-bold text-sm"'>{totalCartItemPrice} ₽</span>
             <Trash2Icon
-              className={cn(
-                'text-red-500 cursor-pointer',
-                isPending && 'opacity-50 cursor-not-allowed'
-              )}
+              className={'text-red-500 cursor-pointer'}
               size={16}
               onClick={() => !isPending && removeCartItem({ id })}
             />
