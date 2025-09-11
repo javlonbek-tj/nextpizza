@@ -6,15 +6,26 @@ interface Props {
   label: string;
   value: string;
   name: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
 }
 
-export function FilterCheckbox({ className, label, value, name }: Props) {
+export function FilterCheckbox({
+  className,
+  label,
+  value,
+  name,
+  checked,
+  onChange,
+}: Props) {
   return (
     <div className={cn('flex items-center gap-3', className)}>
       <Checkbox
         id={`checkbox-${String(name)}-${String(value)}`}
         className='rounded-[8px] w-6 h-6'
         value={value}
+        checked={checked}
+        onCheckedChange={onChange}
       />
       <label
         htmlFor={`checkbox-${String(name)}-${String(value)}`}

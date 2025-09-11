@@ -11,23 +11,36 @@ interface Props {
   min: number;
   max: number;
   step: number;
+  value: [number, number];
+  onValueChange: (value: [number, number]) => void;
 }
 
-export function PriceRange({ className, title, min, max, step }: Props) {
-  const [range, setRange] = useState<[number, number]>([min, max]);
+export function PriceRange({
+  className,
+  title,
+  min,
+  max,
+  step,
+  value = [min, max],
+  onValueChange,
+}: Props) {
+  const [range, setRange] = useState<[number, number]>(value);
 
   const handleSliderChange = (value: number[]) => {
     setRange([value[0], value[1]]);
+    onValueChange([value[0], value[1]]);
   };
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMin = Number(e.target.value) || 0;
     setRange([Math.min(newMin, range[1]), range[1]]);
+    onValueChange([Math.min(newMin, range[1]), range[1]]);
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newMax = Number(e.target.value) || 0;
     setRange([range[0], Math.max(newMax, range[0])]);
+    onValueChange([range[0], Math.max(newMax, range[0])]);
   };
 
   return (

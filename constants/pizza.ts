@@ -27,3 +27,6 @@ export const pizzaSizes: Variant[] = Object.entries(mapPizzaSize).map(
 
 export type PizzaSize = keyof typeof mapPizzaSize;
 export type PizzaType = keyof typeof mapPizzaType;
+
+export const DEFAULT_PRICE_FROM = 0;
+export const DEFAULT_PRICE_TO = 1000;

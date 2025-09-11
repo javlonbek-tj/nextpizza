@@ -7,8 +7,8 @@ import { FilterCheckbox } from './Filter-checkbox';
 
 interface Props {
   options: { label: string; value: string }[];
-  values: string[];
-  onValuesChange: (values: string[]) => void;
+  values: Set<string>;
+  onClickCheckbox: (id: string) => void;
   title: string;
   name: string;
   limit?: number;
@@ -18,8 +18,8 @@ interface Props {
 
 export function FilterCheckboxGroup({
   options,
-  values = [],
-  onValuesChange,
+  values,
+  onClickCheckbox,
   name,
   title,
   limit = 5,
@@ -39,12 +39,14 @@ export function FilterCheckboxGroup({
       )
     : options.slice(0, limit);
 
-  const handleCheckboxChange = (value: string, checked: boolean) => {
-    const newValues = checked
-      ? [...values, value]
-      : values.filter((v) => v !== value);
-
-    onValuesChange?.(newValues);
+  const handleCheckboxChange = (id: string, checked: boolean) => {
+    const newValues = new Set(values);
+    if (checked) {
+      newValues.add(id);
+    } else {
+      newValues.delete(id);
+    }
+    onClickCheckbox(id);
   };
 
   return (
@@ -75,6 +77,8 @@ export function FilterCheckboxGroup({
             key={option.label}
             label={option.label}
             value={option.value}
+            checked={values.has(option.value)}
+            onChange={(checked) => handleCheckboxChange(option.value, checked)}
             name={name}
           />
         ))}
