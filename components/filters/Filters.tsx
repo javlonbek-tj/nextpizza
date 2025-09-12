@@ -6,7 +6,7 @@ import { PriceRange } from './Price-range';
 import { useIngredients } from '../hooks';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSet } from 'react-use';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import qs from 'qs';
 import { DEFAULT_PRICE_FROM, DEFAULT_PRICE_TO } from '@/constants';
 
@@ -20,55 +20,70 @@ interface PriceProps {
 }
 
 export function Filters({ className }: Props) {
-  // TODO: add loading state and error state
   const { data: ingredients, isPending, isError } = useIngredients();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [ingredientsIds, { toggle: toggleIngredient }] = useSet(
-    new Set<string>(searchParams.get('ingredients')?.split(',') || [])
+    new Set<string>(
+      searchParams.get('ingredients')?.split(',').filter(Boolean) || []
+    )
   );
 
   const [pizzaTypes, { toggle: togglePizzaType }] = useSet(
-    new Set<string>(searchParams.get('pizza-type')?.split(',') || [])
+    new Set<string>(
+      searchParams.get('pizza-type')?.split(',').filter(Boolean) || []
+    )
   );
 
   const [pizzaSizes, { toggle: togglePizzaSize }] = useSet(
-    new Set<string>(searchParams.get('pizza-size')?.split(',') || [])
+    new Set<string>(
+      searchParams.get('pizza-size')?.split(',').filter(Boolean) || []
+    )
   );
 
   const [prices, setPrices] = useState<PriceProps>({
-    priceFrom: Number(searchParams.get('price-from')) || undefined,
-    priceTo: Number(searchParams.get('price-to')) || undefined,
+    priceFrom: searchParams.get('price-from')
+      ? Number(searchParams.get('price-from'))
+      : undefined,
+    priceTo: searchParams.get('price-to')
+      ? Number(searchParams.get('price-to'))
+      : undefined,
   });
 
-  const params: Record<string, string | number | undefined> = {};
+  const updateURL = useCallback(() => {
+    const params: Record<string, string | number | undefined> = {};
 
-  if (ingredientsIds.size > 0) {
-    params['ingredients'] = Array.from(ingredientsIds).join(',');
-  }
+    if (ingredientsIds.size > 0) {
+      params['ingredients'] = Array.from(ingredientsIds).join(',');
+    }
+    if (pizzaTypes.size > 0) {
+      params['pizza-type'] = Array.from(pizzaTypes).join(',');
+    }
+    if (pizzaSizes.size > 0) {
+      params['pizza-size'] = Array.from(pizzaSizes).join(',');
+    }
+    if (prices.priceFrom && prices.priceFrom !== DEFAULT_PRICE_FROM) {
+      params['price-from'] = prices.priceFrom;
+    }
+    if (prices.priceTo && prices.priceTo !== DEFAULT_PRICE_TO) {
+      params['price-to'] = prices.priceTo;
+    }
 
-  if (pizzaTypes.size > 0) {
-    params['pizza-type'] = Array.from(pizzaTypes).join(',');
-  }
-
-  if (pizzaSizes.size > 0) {
-    params['pizza-size'] = Array.from(pizzaSizes).join(',');
-  }
-
-  if (prices.priceFrom !== undefined) {
-    params['price-from'] = prices.priceFrom;
-  }
-
-  if (prices.priceTo !== undefined) {
-    params['price-to'] = prices.priceTo;
-  }
-
-  const query = qs.stringify(params, { skipNulls: true });
+    const query = qs.stringify(params, { skipNulls: true });
+    router.push(`?${query}`, { scroll: false });
+  }, [ingredientsIds, pizzaTypes, pizzaSizes, prices, router]);
 
   useEffect(() => {
-    router.push(`?${query}`, { scroll: false });
-  }, [query, router]);
+    updateURL();
+  }, [updateURL]);
+
+  const handlePriceChange = useCallback((value: [number, number]) => {
+    setPrices({
+      priceFrom: value[0] === DEFAULT_PRICE_FROM ? undefined : value[0],
+      priceTo: value[1] === DEFAULT_PRICE_TO ? undefined : value[1],
+    });
+  }, []);
 
   const options = ingredients.map((item) => ({
     label: item.name,
@@ -109,27 +124,41 @@ export function Filters({ className }: Props) {
         min={DEFAULT_PRICE_FROM}
         max={DEFAULT_PRICE_TO}
         step={10}
-        value={[prices.priceFrom || 0, prices.priceTo || 1000]}
-        onValueChange={(value) =>
-          setPrices({ priceFrom: value[0], priceTo: value[1] })
-        }
+        value={[
+          prices.priceFrom || DEFAULT_PRICE_FROM,
+          prices.priceTo || DEFAULT_PRICE_TO,
+        ]}
+        onValueChange={handlePriceChange}
       />
+      {!isPending && !isError && ingredients.length > 0 && (
+        <FilterCheckboxGroup
+          options={options}
+          name='ingredients'
+          title='Ингредиенты'
+          limit={6}
+          className='mb-5'
+          values={ingredientsIds}
+          onClickCheckbox={(id) => toggleIngredient(id)}
+        />
+      )}
 
-      <FilterCheckboxGroup
-        options={options}
-        name='ingredients'
-        title='Ингредиенты'
-        limit={6}
-        className='mb-5'
-        values={ingredientsIds}
-        onClickCheckbox={(id) => toggleIngredient(id)}
-      />
-      <div>{ingredientsIds}</div>
-      <div>{pizzaTypes}</div>
-      <div>{pizzaSizes}</div>
-      <div>
-        From: {prices.priceFrom} – To: {prices.priceTo}
-      </div>
+      {isPending && (
+        <div className='mb-5'>
+          <Title text='Ингредиенты' size='sm' className='mb-3 font-bold' />
+          <div className='animate-pulse space-y-2'>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className='h-6 bg-gray-200 rounded' />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {isError && (
+        <div className='mb-5'>
+          <Title text='Ингредиенты' size='sm' className='mb-3 font-bold' />
+          <p className='text-gray-500 text-sm'>Ошибка загрузки ингредиентов</p>
+        </div>
+      )}
     </div>
   );
 }
