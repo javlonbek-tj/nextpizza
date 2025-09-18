@@ -25,13 +25,13 @@ export function GroupVariants({ className, variants, value, onClick }: Props) {
       {variants.map((variant) => (
         <button
           key={variant.value}
-          type="button"
+          type='button'
           aria-pressed={variant.value === value}
           disabled={variant.disabled}
           className={cn(
             'flex-1 px-4 py-1.5 rounded-full cursor-pointer',
-            variant.value === value && 'bg-white cursor-not-allowed',
-            variant.disabled && 'cursor-not-allowed opacity-50'
+            variant.value === value && 'bg-white pointer-events-none',
+            variant.disabled && 'pointer-events-none opacity-50'
           )}
           onClick={() => onClick(variant.value)}
         >

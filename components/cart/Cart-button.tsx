@@ -12,15 +12,26 @@ interface Props {
 }
 
 export function CartButton({ className }: Props) {
-  const { data: cartItems, isPending } = useCart();
+  const { data: cartItems, isPending, isError } = useCart();
 
-  if (isPending) {
+  if (isPending && !isError) {
     return (
       <Button
         className={cn('flex items-center min-w-[120px]', className)}
         disabled
       >
         <Loader className='w-5 h-5 animate-spin' />
+      </Button>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Button
+        className={cn('flex items-center min-w-[120px]', className)}
+        disabled
+      >
+        <span className='text-red-500 text-sm'>Ошибка</span>
       </Button>
     );
   }

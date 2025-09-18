@@ -8,10 +8,10 @@ export default async function ProductPage({
 }: {
   params: { id: string };
 }) {
-  const { id } = await params;
+  const param = await params;
 
   const product = await prisma.product.findFirst({
-    where: { id: Number(id) },
+    where: { id: Number(param.id) },
     include: {
       ingredients: true,
       productItems: true,
@@ -30,8 +30,8 @@ export default async function ProductPage({
   if (!product) return notFound();
 
   return (
-    <Container className="my-10">
-      <ProductForm product={product} />
+    <Container className='my-10'>
+      <ProductForm product={product} isModal={false} />
     </Container>
   );
 }

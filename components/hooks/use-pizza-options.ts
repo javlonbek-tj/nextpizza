@@ -1,3 +1,5 @@
+'use client';
+
 import { mapPizzaType, PizzaSize } from '../../constants/pizza';
 import { ProductWithRelations } from '@/prisma/@types/prisma';
 import { pizzaSizes, PizzaType } from '@/constants/pizza';

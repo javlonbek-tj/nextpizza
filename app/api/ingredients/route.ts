@@ -8,9 +8,9 @@ export async function GET() {
     return NextResponse.json(ingredients);
   } catch (error) {
     // TODO REMOVE CONSOLE
-    console.error(error);
+    console.error('[Error fetching ingredients]:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Error while fetching ingredients' },
       { status: 500 }
     );
   }

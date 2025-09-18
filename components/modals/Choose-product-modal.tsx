@@ -19,14 +19,14 @@ export function ChooseProductModal({ className, product }: Props) {
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
       <DialogContent
-        size="xl"
+        size='xl'
         className={cn('p-0 min-h-[500px] overflow-hidden', className)}
       >
         {/* Hidden title for accessibility */}
-        <DialogTitle className="sr-only">
+        <DialogTitle className='sr-only'>
           Choose {product?.name || 'Product'}
         </DialogTitle>
-        <ProductForm product={product} onClose={() => router.back()} />
+        <ProductForm product={product} isModal={true} />
       </DialogContent>
     </Dialog>
   );

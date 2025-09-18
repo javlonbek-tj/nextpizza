@@ -11,16 +11,24 @@ import { usePizzaOptions } from '../hooks';
 import { GroupVariants } from './Group-variants';
 import { IngredientItem } from './Ingredient';
 import { Button } from '../ui/button';
-import { useAddToCart } from '../hooks/use-cart';
 import { Loader } from 'lucide-react';
+import { InvalidPizzaItems } from './Invalid-pizza-items';
 
 interface Props {
   className?: string;
   product: ProductWithRelations;
-  onClose: () => void;
+  onAddToCart: () => void;
+  isPending: boolean;
+  isModal: boolean;
 }
 
-export function ChoosePizzaForm({ className, product, onClose }: Props) {
+export function ChoosePizzaForm({
+  className,
+  product,
+  onAddToCart,
+  isPending,
+  isModal,
+}: Props) {
   const {
     allPizzaSizes,
     type,
@@ -32,74 +40,40 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
     description,
     hasValidPizzaItems,
     error,
-    selectedPizzaItemId,
     totalPrice,
   } = usePizzaOptions(product);
-
-  const { mutate: addToCart, isPending } = useAddToCart();
-
-  async function handleAddToCart() {
-    if (selectedPizzaItemId) {
-      addToCart({
-        productItemId: selectedPizzaItemId,
-        ingredients: Array.from(selectedIngredients),
-        quantity: 1,
-      });
-    }
-    onClose();
-  }
-
   if (!hasValidPizzaItems) {
-    return (
+    return <InvalidPizzaItems error={error} />;
+  }
+  return (
+    <div className={cn('flex', !isModal && ' max-w-5xl mx-auto ', className)}>
+      <PizzaImage
+        imageUrl={product.imageUrl}
+        size={size}
+        className={isModal ? '' : 'rounded-2xl overflow-hidden bg-[#FFF7EE]'}
+      />
       <div
         className={cn(
-          'flex justify-center items-center min-h-[500px]',
-          className
+          'flex-1 h-full p-7',
+          isModal ? 'bg-[#f7f6f5]' : 'bg-white py-0'
         )}
       >
-        <div className='p-8 text-center'>
-          <Title text='Продукт недоступен' size='md' className='text-red-600' />
-          <p className='mt-2 text-gray-500'>{error}</p>
-          <p className='mt-4 text-gray-400 text-sm'>
-            Обратитесь к администратору для исправления конфигурации товара
-          </p>
-          <Button
-            onClick={onClose}
-            variant='outline'
-            className='mt-4 cursor-pointer'
-          >
-            Закрыть
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={cn('flex items-center', className)}>
-      <PizzaImage imageUrl={product.imageUrl} size={size} />
-      <div className='flex-1 bg-[#f7f6f5] p-7 h-full'>
         <Title text={product.name} size='md' />
-
         <p className='text-gray-400'>{description}</p>
-
         <GroupVariants
           variants={allPizzaSizes}
           value={size}
           onClick={(value) => setSize(value as PizzaSize)}
           className='mt-4'
         />
-
         <GroupVariants
           variants={pizzaTypes}
           value={type}
           onClick={(value) => setType(value as PizzaType)}
           className='mt-3'
         />
-
         <Title text='Ингредиенты' size='xs' className='mt-4' />
-
-        <div className='gap-2 grid grid-cols-3 mt-4 h-[400px] overflow-y-scroll scrollbar-thin'>
+        <div className='gap-2 grid grid-cols-3 mt-4 h-[340px] overflow-y-scroll scrollbar-thin'>
           {product.ingredients.map((ingredient) => (
             <IngredientItem
               ingredient={ingredient}
@@ -107,19 +81,19 @@ export function ChoosePizzaForm({ className, product, onClose }: Props) {
               selectedIngredients={selectedIngredients}
               onClick={() => addIngredient(ingredient.id)}
               active={selectedIngredients.has(ingredient.id)}
+              className={isModal ? '' : 'bg-[#f7f6f5]'}
             />
           ))}
         </div>
-
         <Button
-          className='mt-5 py-5 w-full cursor-pointer'
+          className='w-full cursor-pointer mt-5 py-5'
           disabled={isPending}
-          onClick={handleAddToCart}
+          onClick={onAddToCart}
         >
           {isPending ? (
             <Loader className='w-5 h-5 animate-spin' />
           ) : (
-            `Добавить в корзину за ${totalPrice} ₽`
+            <>Добавить в корзину за {totalPrice} ₽</>
           )}
         </Button>
       </div>

@@ -4,27 +4,25 @@ import { Button } from '@/components/ui/button';
 import { PropsWithChildren } from 'react';
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { ArrowLeft, ArrowRight, Loader } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { CartDrawerItem } from '../cart';
 
 import { calculateTotalAmount, getCartItemDetails } from '@/lib/cart';
 import { useCart } from '../hooks';
-import Image from 'next/image';
-import { Title } from '../shared';
 import { cn } from '@/lib';
 
 import { useIsMutating } from '@tanstack/react-query';
 import { queryKeys } from '@/constants';
+import { EmptyCart } from './Empty-cart';
 
 export function CartDrawer({ children }: PropsWithChildren) {
-  const { data, isPending, isError } = useCart();
+  const { data } = useCart();
   const isDeleting =
     useIsMutating({
       mutationKey: queryKeys.removeCartItem,
@@ -41,57 +39,18 @@ export function CartDrawer({ children }: PropsWithChildren) {
           !totalAmount && 'flex items-center justify-center'
         )}
       >
-        {isPending && (
-          <div className='flex items-center justify-center h-full'>
-            <Loader className='w-6 h-6 animate-spin' />
-            <span className='ml-2'>Loading cart...</span>
-          </div>
-        )}
-
-        {isError && (
-          <div className='flex items-center justify-center h-full'>
-            <p>Error loading cart. Please try again.</p>
-          </div>
-        )}
         <>
-          {totalAmount > 0 && (
-            <SheetHeader>
-              <SheetTitle>
-                {data?.length === 1
+          <SheetHeader>
+            <SheetTitle className={totalAmount > 0 ? '' : 'sr-only'}>
+              {totalAmount > 0
+                ? data?.length === 1
                   ? `В корзине ${data?.length} товар`
-                  : `В корзине ${data?.length} товара`}
-              </SheetTitle>
-            </SheetHeader>
-          )}
+                  : `В корзине ${data?.length} товара`
+                : 'Корзина'}
+            </SheetTitle>
+          </SheetHeader>
 
-          {!totalAmount && (
-            <div className='flex flex-col justify-center items-center mx-auto w-72'>
-              <Image
-                src='/assets/images/empty-box.png'
-                alt='Empty cart'
-                width={120}
-                height={120}
-              />
-              <Title
-                size='sm'
-                text='Корзина пустая'
-                className='my-2 font-bold text-center'
-              />
-              <p className='mb-5 text-neutral-500 text-center'>
-                Добавьте хотя бы одну пиццу, чтобы совершить заказ
-              </p>
-
-              <SheetClose>
-                <Button
-                  className='w-56 h-12 text-base cursor-pointer'
-                  size='lg'
-                >
-                  <ArrowLeft className='mr-2 w-5' />
-                  Вернуться назад
-                </Button>
-              </SheetClose>
-            </div>
-          )}
+          {!totalAmount && <EmptyCart />}
 
           {totalAmount > 0 && (
             <>

@@ -1,13 +1,13 @@
 'use client';
+import qs from 'qs';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useSet } from 'react-use';
+import { useIngredients } from '../hooks';
 import { cn } from '@/lib';
 import { Title } from '../shared/Title';
 import { FilterCheckboxGroup } from './Filter-checkbox-group';
 import { PriceRange } from './Price-range';
-import { useIngredients } from '../hooks';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useSet } from 'react-use';
-import { useCallback, useEffect, useState } from 'react';
-import qs from 'qs';
 import { DEFAULT_PRICE_FROM, DEFAULT_PRICE_TO } from '@/constants';
 
 interface Props {
@@ -32,22 +32,22 @@ export function Filters({ className }: Props) {
 
   const [pizzaTypes, { toggle: togglePizzaType }] = useSet(
     new Set<string>(
-      searchParams.get('pizza-type')?.split(',').filter(Boolean) || []
+      searchParams.get('pizzaTypes')?.split(',').filter(Boolean) || []
     )
   );
 
-  const [pizzaSizes, { toggle: togglePizzaSize }] = useSet(
+  const [pizzaSize, { toggle: togglePizzaSize }] = useSet(
     new Set<string>(
-      searchParams.get('pizza-size')?.split(',').filter(Boolean) || []
+      searchParams.get('pizzaSize')?.split(',').filter(Boolean) || []
     )
   );
 
   const [prices, setPrices] = useState<PriceProps>({
-    priceFrom: searchParams.get('price-from')
-      ? Number(searchParams.get('price-from'))
+    priceFrom: searchParams.get('priceFrom')
+      ? Number(searchParams.get('priceFrom'))
       : undefined,
-    priceTo: searchParams.get('price-to')
-      ? Number(searchParams.get('price-to'))
+    priceTo: searchParams.get('priceTo')
+      ? Number(searchParams.get('priceTo'))
       : undefined,
   });
 
@@ -58,21 +58,21 @@ export function Filters({ className }: Props) {
       params['ingredients'] = Array.from(ingredientsIds).join(',');
     }
     if (pizzaTypes.size > 0) {
-      params['pizza-type'] = Array.from(pizzaTypes).join(',');
+      params['pizzaTypes'] = Array.from(pizzaTypes).join(',');
     }
-    if (pizzaSizes.size > 0) {
-      params['pizza-size'] = Array.from(pizzaSizes).join(',');
+    if (pizzaSize.size > 0) {
+      params['pizzaSize'] = Array.from(pizzaSize).join(',');
     }
     if (prices.priceFrom && prices.priceFrom !== DEFAULT_PRICE_FROM) {
-      params['price-from'] = prices.priceFrom;
+      params['priceFrom'] = prices.priceFrom;
     }
     if (prices.priceTo && prices.priceTo !== DEFAULT_PRICE_TO) {
-      params['price-to'] = prices.priceTo;
+      params['priceTo'] = prices.priceTo;
     }
 
     const query = qs.stringify(params, { skipNulls: true });
     router.push(`?${query}`, { scroll: false });
-  }, [ingredientsIds, pizzaTypes, pizzaSizes, prices, router]);
+  }, [ingredientsIds, pizzaTypes, pizzaSize, prices, router]);
 
   useEffect(() => {
     updateURL();
@@ -107,14 +107,14 @@ export function Filters({ className }: Props) {
 
       <FilterCheckboxGroup
         options={[
-          { label: '30 см', value: '1' },
-          { label: '40 см', value: '2' },
-          { label: '50 см', value: '3' },
+          { label: '30 см', value: '30' },
+          { label: '40 см', value: '40' },
+          { label: '50 см', value: '50' },
         ]}
         name='pizza-size'
         title='Размеры'
         className='mb-5'
-        values={pizzaSizes}
+        values={pizzaSize}
         onClickCheckbox={(id) => togglePizzaSize(id)}
       />
 

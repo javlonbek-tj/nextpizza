@@ -34,19 +34,22 @@ export function CartDrawerItem({
       )}
     >
       <Image src={imageUrl} alt={name} width={60} height={60} />
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2 flex-1'>
         <CartItemInfo name={name} details={details} />
         <hr />
-        <div className='flex justify-between items-center'>
+        <div className='flex items-center justify-between'>
+          {/* Quantity controls */}
           <div className='flex items-center gap-3'>
             <CartIconButton type='minus' quantity={quantity} cartItemId={id} />
             <span className='text-sm'>{quantity}</span>
             <CartIconButton type='plus' quantity={quantity} cartItemId={id} />
           </div>
+
+          {/* Price + Remove */}
           <div className='flex items-center gap-4'>
-            <span className='font-bold text-sm"'>{totalCartItemPrice} ₽</span>
+            <span className='font-bold text-sm'>{totalCartItemPrice} ₽</span>
             <Trash2Icon
-              className={'text-red-500 cursor-pointer'}
+              className='text-red-500 cursor-pointer'
               size={16}
               onClick={() => !isPending && removeCartItem({ id })}
             />

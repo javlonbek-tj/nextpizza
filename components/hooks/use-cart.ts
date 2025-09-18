@@ -4,7 +4,6 @@ import { Api } from '@/services/api-client';
 import { getCartDetails } from '@/lib/cart';
 import { AddToCartDto } from '@/services/dto/cart.dto';
 import { queryKeys } from '@/constants';
-import { sleep } from '@/lib';
 
 export function useCart() {
   return useQuery({

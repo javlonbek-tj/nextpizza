@@ -18,7 +18,7 @@ export function PizzaImage({ className, imageUrl, size }: Props) {
     <div className={cn('flex flex-1 justify-center items-center', className)}>
       <Image
         src={imageUrl}
-        alt="Pizza image"
+        alt='Pizza image'
         width={dimensions.w}
         height={dimensions.h}
       />
