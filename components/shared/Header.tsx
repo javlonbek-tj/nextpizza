@@ -10,9 +10,15 @@ import Link from 'next/link';
 
 interface Props {
   className?: string;
+  hasSearch?: boolean;
+  hasCartBtn?: boolean;
 }
 
-export function Header({ className }: Props) {
+export function Header({
+  className,
+  hasSearch = true,
+  hasCartBtn = true,
+}: Props) {
   return (
     <header className={cn('border border-b', className)}>
       <Container className='flex justify-between items-center py-5'>
@@ -28,7 +34,7 @@ export function Header({ className }: Props) {
           </div>
         </Link>
 
-        <SearchInput />
+        {hasSearch && <SearchInput />}
 
         <div className='flex items-center gap-4'>
           <Button
@@ -38,7 +44,8 @@ export function Header({ className }: Props) {
             <User />
             <span>Профиль</span>
           </Button>
-          <CartButton />
+
+          {hasCartBtn && <CartButton />}
         </div>
       </Container>
     </header>

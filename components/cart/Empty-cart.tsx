@@ -1,8 +1,8 @@
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { Title } from '../shared';
 import { SheetClose } from '../ui/sheet';
 import { Button } from '../ui/button';
-import { ArrowLeft } from 'lucide-react';
 
 export function EmptyCart() {
   return (

@@ -1,7 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 import { PropsWithChildren } from 'react';
+import { useIsMutating } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
@@ -10,14 +12,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { ArrowRight } from 'lucide-react';
 import { CartDrawerItem } from '../cart';
 
 import { calculateTotalAmount, getCartItemDetails } from '@/lib/cart';
 import { useCart } from '../hooks';
 import { cn } from '@/lib';
 
-import { useIsMutating } from '@tanstack/react-query';
 import { queryKeys } from '@/constants';
 import { EmptyCart } from './Empty-cart';
 

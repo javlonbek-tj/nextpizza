@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils';
+import { Trash2Icon } from 'lucide-react';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 import { CartItemInfo } from './Cart-item-info';
 import { CartIconButton } from './Cart-icon-button';
-import { Trash2Icon } from 'lucide-react';
 import { useRemoveCartItem } from '../hooks/use-cart';
 
 interface Props {

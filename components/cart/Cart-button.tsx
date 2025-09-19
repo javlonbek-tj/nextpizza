@@ -1,11 +1,12 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
+import { CartDrawer } from './Cart-drawer';
 import { Button } from '../ui/button';
-import { ArrowRight, Loader, ShoppingCart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useCart } from '../hooks';
 import { calculateTotalAmount } from '@/lib/cart';
-import { CartDrawer } from './Cart-drawer';
+import { CartButtonSkeleton } from '../skeletons';
 
 interface Props {
   className?: string;
@@ -15,14 +16,7 @@ export function CartButton({ className }: Props) {
   const { data: cartItems, isPending, isError } = useCart();
 
   if (isPending && !isError) {
-    return (
-      <Button
-        className={cn('flex items-center min-w-[120px]', className)}
-        disabled
-      >
-        <Loader className='w-5 h-5 animate-spin' />
-      </Button>
-    );
+    return <CartButtonSkeleton />;
   }
 
   if (isError) {

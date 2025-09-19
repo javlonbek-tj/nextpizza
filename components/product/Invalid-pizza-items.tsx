@@ -1,7 +1,9 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { Title } from '../shared';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   className?: string;

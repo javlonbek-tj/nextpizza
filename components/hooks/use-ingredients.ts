@@ -15,5 +15,10 @@ export const useIngredients = () => {
     queryFn: getAll,
   });
 
-  return { data, isPending, isError };
+  const options = data.map((item) => ({
+    label: item.name,
+    value: String(item.id),
+  }));
+
+  return { options, isPending, isError };
 };
