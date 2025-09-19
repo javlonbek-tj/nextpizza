@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 import { findOrCreateCart } from '@/lib/cart/find-or-crate-cart';
 import prisma from '@/prisma/prisma-client';
 import { AddToCartDto } from '@/services/dto/cart.dto';
@@ -43,7 +45,7 @@ export async function POST(req: NextRequest) {
     let token = req.cookies.get('cartToken')?.value;
 
     if (!token) {
-      token = crypto.randomUUID();
+      token = randomUUID();
     }
 
     const userCart = await findOrCreateCart(token);
@@ -89,7 +91,7 @@ export async function POST(req: NextRequest) {
         data: {
           cartId: userCart.id,
           productItemId: data.productItemId,
-          quantity: 1,
+          quantity: data.quantity ?? 1,
           ingredients: { connect: data.ingredients?.map((id) => ({ id })) },
         },
       });
