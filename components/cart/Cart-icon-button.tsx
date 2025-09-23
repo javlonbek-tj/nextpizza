@@ -24,7 +24,7 @@ export function CartIconButton({ type, quantity, cartItemId }: Props) {
 
   const buttonClassName = cn(
     'group relative p-2.5 border-2 border-primary rounded-md transition-colors duration-200 ease-in-out cursor-pointer',
-    'hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:border-gray-300',
+    'hover:bg-primary disabled:opacity-50 disabled:pointer-events-none disabled:border-gray-300',
     isDisabled &&
       'bg-gray-100 border-gray-300 hover:bg-gray-100 hover:border-gray-300'
   );

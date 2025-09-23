@@ -1,12 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
-import { User } from 'lucide-react';
+import Link from 'next/link';
 
 import { cn } from '@/lib';
 import { Container } from './Container';
-import { Button } from '../ui/button';
 import { SearchInput } from '../filters/Search-input';
 import { CartButton } from '../cart/';
-import Link from 'next/link';
+import { ProfileButton } from './Profile-button';
+import { AuthModal } from '../modals/auth-modal/auth-modal';
 
 interface Props {
   className?: string;
@@ -19,6 +22,7 @@ export function Header({
   hasSearch = true,
   hasCartBtn = true,
 }: Props) {
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   return (
     <header className={cn('border border-b', className)}>
       <Container className='flex justify-between items-center py-5'>
@@ -37,13 +41,11 @@ export function Header({
         {hasSearch && <SearchInput />}
 
         <div className='flex items-center gap-4'>
-          <Button
-            variant={'outline'}
-            className='transition duration-300 cursor-pointer'
-          >
-            <User />
-            <span>Профиль</span>
-          </Button>
+          <AuthModal
+            open={openAuthModal}
+            onClose={() => setOpenAuthModal(false)}
+          />
+          <ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
 
           {hasCartBtn && <CartButton />}
         </div>

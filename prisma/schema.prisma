@@ -13,12 +13,11 @@ model User {
 
   fullName String
   email    String   @unique
-  password String
+  password String?
   role     UserRole @default(USER)
-  provider String?
-
-  providerId String?
   verified   DateTime?
+
+  accounts Account[]
 
   Cart Cart?
 
@@ -26,6 +25,27 @@ model User {
   updatedAt        DateTime          @updatedAt
   VerificationCode VerificationCode?
 }
+
+model Account {
+  id                 Int     @id @default(autoincrement())
+  userId             Int     @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String
+  refreshToken       String? @db.Text
+  accessToken        String? @db.Text
+  expiresAt          Int?
+  tokenType          String?
+  scope              String?
+  idToken            String? @db.Text
+  sessionState       String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
 
 model Product {
   id       Int    @id @default(autoincrement())
