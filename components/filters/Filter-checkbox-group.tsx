@@ -63,7 +63,6 @@ export function FilterCheckboxGroup({
           <div className='mt-2 px-1'>
             <Input
               placeholder={searchInputPlaceholder}
-              className='bg-gray-50 border-none focus:bg-white'
               onChange={onChangeSearchInput}
             />
           </div>

@@ -54,7 +54,6 @@ export function PriceRange({
           onChange={handleMinChange}
           min={min}
           max={range[1]}
-          className='focus:border-none'
         />
         <Input
           type='number'
@@ -62,7 +61,6 @@ export function PriceRange({
           onChange={handleMaxChange}
           min={range[0]}
           max={max}
-          className='focus:border-none'
         />
       </div>
 

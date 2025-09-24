@@ -2,13 +2,13 @@
 
 import bcrypt from 'bcrypt';
 import {
-  signupSchema,
-  SignUpValues,
+  registerSchema,
+  RegisterValues,
 } from '@/components/modals/auth-modal/forms/schemas';
 import prisma from '@/prisma/prisma-client';
 
-export async function signUpAction(values: SignUpValues) {
-  const parsed = signupSchema.safeParse(values);
+export async function registerAction(values: RegisterValues) {
+  const parsed = registerSchema.safeParse(values);
 
   if (!parsed.success) {
     return { error: 'Invalid input data' };

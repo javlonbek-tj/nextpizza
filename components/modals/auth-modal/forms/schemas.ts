@@ -14,7 +14,7 @@ export const loginSchema = z.object({
     .max(20, 'Password cannot exceed 20 characters'),
 });
 
-export const signupSchema = loginSchema
+export const registerSchema = loginSchema
   .extend({
     fullName: z
       .string()
@@ -31,4 +31,4 @@ export const signupSchema = loginSchema
   });
 
 export type LoginValues = z.infer<typeof loginSchema>;
-export type SignUpValues = z.infer<typeof signupSchema>;
+export type RegisterValues = z.infer<typeof registerSchema>;

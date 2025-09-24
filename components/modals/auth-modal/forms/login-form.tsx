@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { loginSchema, LoginValues } from './schemas';
+import { Loader } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -10,13 +10,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { loginSchema, LoginValues } from './schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { loginAction } from '@/app/actions/login';
+import { signIn } from 'next-auth/react';
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -27,16 +28,35 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: LoginValues) => {
+    setIsSubmitting(true);
     setError(null);
-    setSuccess(null);
 
-    const result = await loginAction(values);
+    try {
+      const result = await signIn('credentials', {
+        email: values.email,
+        password: values.password,
+        redirect: false, // Don't redirect automatically
+      });
 
-    if (result.error) {
-      setError(result.error);
-    } else if (result.success) {
-      setSuccess(result.success);
-      form.reset();
+      if (result?.error) {
+        if (result.error === 'CredentialsSignin') {
+          setError('Invalid email or password.');
+        } else {
+          setError('An error occurred. Please try again.');
+        }
+        return;
+      }
+
+      if (result?.ok) {
+        // Redirect to the homepage or a specific page after successful login
+        window.location.href = '/';
+      }
+    } catch (error) {
+      // TODO REMOVE IN PRODUCTION
+      console.error('Error [LOGIN]', error);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -44,7 +64,7 @@ export function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 max-w-sm mx-auto'
+        className='space-y-4 w-90 mx-auto'
       >
         {/* Email */}
         <FormField
@@ -76,15 +96,16 @@ export function LoginForm() {
           )}
         />
 
-        <Button type='submit' className='w-full'>
-          Login
+        <Button
+          type='submit'
+          className='w-full cursor-pointer'
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? <Loader className='w-5 h-5 animate-spin' /> : 'Войти'}
         </Button>
 
         {/* Messages */}
         {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
-        {success && (
-          <p className='text-green-600 text-sm text-center'>{success}</p>
-        )}
       </form>
     </Form>
   );

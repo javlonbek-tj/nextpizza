@@ -73,6 +73,7 @@ function DialogContent({
           sizeClasses[size],
           className
         )}
+        onOpenAutoFocus={(e) => e.preventDefault()}
         {...props}
       >
         {children}
