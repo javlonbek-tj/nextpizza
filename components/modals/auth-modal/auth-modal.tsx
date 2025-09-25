@@ -10,6 +10,7 @@ import { LoginForm } from './forms/login-form';
 import { RegisterForm } from './forms/register-form';
 import { Button } from '@/components/ui/button';
 import { AuthSwitch } from './auth-switch';
+import { DEFAULT_LOGIN_REDIRECT } from '@/auth/routes';
 
 interface Props {
   open: boolean;
@@ -29,36 +30,40 @@ export function AuthModal({ open, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='w-[450px] bg-white p-7'>
-        <DialogTitle className='text-xl font-semibold text-center'>
+      <DialogContent className="bg-white p-7 w-[450px]">
+        <DialogTitle className="font-semibold text-xl text-center">
           {type === 'login' ? 'Войти' : 'Регистрация'}
         </DialogTitle>
 
         {type === 'login' ? <LoginForm /> : <RegisterForm />}
-        <hr className='my-3' />
+        <hr className="my-3" />
 
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           <Button
-            variant='secondary'
+            variant="secondary"
             onClick={() =>
-              signIn('github', { callbackUrl: '/', redirect: true })
+              signIn('github', {
+                callbackUrl: DEFAULT_LOGIN_REDIRECT,
+              })
             }
-            type='button'
-            className='gap-2 h-10 p-2 flex-1 text-amber-950 cursor-pointer'
+            type="button"
+            className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
           >
-            <FaGithub className='w-6 h-6' />
+            <FaGithub className="w-6 h-6" />
             GitHub
           </Button>
 
           <Button
-            variant='secondary'
+            variant="secondary"
             onClick={() =>
-              signIn('google', { callbackUrl: '/', redirect: true })
+              signIn('google', {
+                callbackUrl: DEFAULT_LOGIN_REDIRECT,
+              })
             }
-            type='button'
-            className='gap-2 h-10 p-2 flex-1 text-amber-950 cursor-pointer'
+            type="button"
+            className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
           >
-            <FcGoogle className='w-6 h-6' />
+            <FcGoogle className="w-6 h-6" />
             Google
           </Button>
         </div>

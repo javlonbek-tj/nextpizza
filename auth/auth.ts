@@ -7,5 +7,18 @@ import prisma from '@/prisma/prisma-client';
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: 'jwt' },
+  secret: process.env.AUTH_SECRET,
+  events: {
+    async linkAccount({ user, account }) {
+      if (account.provider === 'google' || account.provider === 'github') {
+        await prisma.user.update({
+          where: { id: Number(user.id) },
+          data: {
+            verified: new Date(),
+          },
+        });
+      }
+    },
+  },
   ...authConfig,
 });

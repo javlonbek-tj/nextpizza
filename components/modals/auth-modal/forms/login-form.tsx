@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -13,7 +14,6 @@ import {
 import { loginSchema, LoginValues } from './schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -64,17 +64,17 @@ export function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 w-90 mx-auto'
+        className="space-y-4 mx-auto w-90"
       >
         {/* Email */}
         <FormField
           control={form.control}
-          name='email'
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='you@example.com' type='email' {...field} />
+                <Input placeholder="you@example.com" type="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,12 +84,12 @@ export function LoginForm() {
         {/* Password */}
         <FormField
           control={form.control}
-          name='password'
+          name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='******' type='password' {...field} />
+                <Input placeholder="******" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,15 +97,15 @@ export function LoginForm() {
         />
 
         <Button
-          type='submit'
-          className='w-full cursor-pointer'
+          type="submit"
+          className="w-full cursor-pointer"
           disabled={isSubmitting}
         >
-          {isSubmitting ? <Loader className='w-5 h-5 animate-spin' /> : 'Войти'}
+          {isSubmitting ? <Loader className="w-5 h-5 animate-spin" /> : 'Войти'}
         </Button>
 
         {/* Messages */}
-        {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
       </form>
     </Form>
   );
