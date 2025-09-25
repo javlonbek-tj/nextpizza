@@ -21,7 +21,7 @@ export const findPizzas = async (params: GetSearchParams) => {
     ? params.pizzaTypes.split(',').map(Number)
     : undefined;
   const ingredients = params.ingredients
-    ? params.ingredients.split(',').map(Number)
+    ? params.ingredients.split(',')
     : undefined;
   const priceFrom = Number(params.priceFrom) || DEFAULT_PRICE_FROM;
   const priceTo = Number(params.priceTo) || DEFAULT_PRICE_TO;
@@ -30,7 +30,7 @@ export const findPizzas = async (params: GetSearchParams) => {
     include: {
       products: {
         orderBy: {
-          id: 'desc',
+          createdAt: 'desc',
         },
         where: {
           ...(ingredients && {
@@ -61,5 +61,10 @@ export const findPizzas = async (params: GetSearchParams) => {
     },
   });
 
-  return categories;
+  // Always put "Пицца" first
+  return categories.sort((a, b) => {
+    if (a.name === 'Пиццы') return -1;
+    if (b.name === 'Пиццы') return 1;
+    return 0;
+  });
 };

@@ -19,52 +19,60 @@ interface Props {
 
 export function AuthModal({ open, onClose }: Props) {
   const [type, setType] = useState<'login' | 'register'>('login');
+  const [loadingProvider, setLoadingProvider] = useState<
+    null | 'google' | 'github'
+  >(null);
 
-  const onSwitchType = () => {
-    setType(type === 'login' ? 'register' : 'login');
-  };
+  const onSwitchType = () => setType(type === 'login' ? 'register' : 'login');
+  const handleClose = () => onClose();
 
-  const handleClose = () => {
-    onClose();
+  const onClick = async (provider: 'google' | 'github') => {
+    setLoadingProvider(provider);
+    await signIn(provider, {
+      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+      redirect: true,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="bg-white p-7 w-[450px]">
-        <DialogTitle className="font-semibold text-xl text-center">
+      <DialogContent className='bg-white p-7 w-[450px]'>
+        <DialogTitle className='font-semibold text-xl text-center'>
           {type === 'login' ? 'Войти' : 'Регистрация'}
         </DialogTitle>
 
         {type === 'login' ? <LoginForm /> : <RegisterForm />}
-        <hr className="my-3" />
+        <hr className='my-3' />
 
-        <div className="flex gap-2">
+        <div className='flex gap-2'>
           <Button
-            variant="secondary"
-            onClick={() =>
-              signIn('github', {
-                callbackUrl: DEFAULT_LOGIN_REDIRECT,
-              })
-            }
-            type="button"
-            className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
+            variant='secondary'
+            onClick={() => onClick('google')}
+            type='button'
+            disabled={loadingProvider !== null}
+            className='flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer'
           >
-            <FaGithub className="w-6 h-6" />
-            GitHub
+            {loadingProvider === 'google' ? (
+              <span className='animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full' />
+            ) : (
+              <FcGoogle className='w-6 h-6' />
+            )}
+            Google
           </Button>
 
           <Button
-            variant="secondary"
-            onClick={() =>
-              signIn('google', {
-                callbackUrl: DEFAULT_LOGIN_REDIRECT,
-              })
-            }
-            type="button"
-            className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
+            variant='secondary'
+            onClick={() => onClick('github')}
+            type='button'
+            disabled={loadingProvider !== null}
+            className='flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer'
           >
-            <FcGoogle className="w-6 h-6" />
-            Google
+            {loadingProvider === 'github' ? (
+              <span className='animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full' />
+            ) : (
+              <FaGithub className='w-6 h-6' />
+            )}
+            GitHub
           </Button>
         </div>
 

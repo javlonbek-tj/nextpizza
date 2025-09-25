@@ -9,53 +9,51 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  fullName String
-  email    String   @unique
-  password String?
-  role     UserRole @default(USER)
-  verified   DateTime?
+  name          String
+  image         String?
+  email         String?   @unique
+  password      String?
+  role          UserRole  @default(USER)
+  emailVerified DateTime?
 
   accounts Account[]
 
   Cart Cart?
 
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  VerificationCode VerificationCode?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
-  id                 Int     @id @default(autoincrement())
-  userId             Int     @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String
-  refreshToken       String? @db.Text
-  accessToken        String? @db.Text
-  expiresAt          Int?
-  tokenType          String?
-  scope              String?
-  idToken            String? @db.Text
-  sessionState       String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map("accounts")
 }
 
-
 model Product {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(cuid())
   name     String
   imageUrl String
 
-  productItems  ProductItem[]
+  productItems ProductItem[]
 
   category   Category? @relation(fields: [categoryId], references: [id])
-  categoryId Int?
+  categoryId String?
 
   ingredients Ingredient[]
 
@@ -67,7 +65,7 @@ model ProductItem {
   id Int @id @default(autoincrement())
 
   product   Product @relation(fields: [productId], references: [id])
-  productId Int
+  productId String
 
   price     Float
   size      Int?
@@ -75,11 +73,11 @@ model ProductItem {
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  cartItems   CartItem[]
+  cartItems CartItem[]
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   name String @unique
 
   products Product[]
@@ -89,7 +87,7 @@ model Category {
 }
 
 model Ingredient {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   name String @unique
 
   price    Float
@@ -103,10 +101,10 @@ model Ingredient {
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  userId Int?   @unique
-  user   User? @relation(fields: [userId], references: [id])
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id])
 
   token String
 
@@ -117,10 +115,10 @@ model Cart {
 }
 
 model CartItem {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
-  cart   Cart @relation(fields: [cartId], references: [id])
-  cartId Int
+  cart   Cart   @relation(fields: [cartId], references: [id])
+  cartId String
 
   ingredients Ingredient[]
 
@@ -132,17 +130,13 @@ model CartItem {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationCode {
-  id Int @id @default(autoincrement())
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
 
-  code String
-
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
-
-  createdAt DateTime @default(now())
-
-  @@unique([userId, code])
+  @@unique([email, token])
 }
 
 enum UserRole {

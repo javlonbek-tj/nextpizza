@@ -23,7 +23,7 @@ export async function PATCH(
 
     const param = await params;
 
-    const cartItemId = await parseInt(param.id);
+    const cartItemId = await param.id;
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
@@ -91,7 +91,7 @@ export async function DELETE(
 
     const param = await params;
 
-    const cartItemId = await parseInt(param.id);
+    const cartItemId = await param.id;
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
