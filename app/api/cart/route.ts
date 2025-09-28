@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(cart);
   } catch (error) {
+    // TODO REMOVE CONSOLE
     console.error(error);
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -123,7 +124,7 @@ export async function POST(req: NextRequest) {
     // TODO REMOVE CONSOLE
     console.error('Error adding to cart:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

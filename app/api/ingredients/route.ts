@@ -10,7 +10,7 @@ export async function GET() {
     // TODO REMOVE CONSOLE
     console.error('[Error fetching ingredients]:', error);
     return NextResponse.json(
-      { error: 'Error while fetching ingredients' },
+      { success: false, error: 'Error while fetching ingredients' },
       { status: 500 }
     );
   }

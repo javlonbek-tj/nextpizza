@@ -16,7 +16,7 @@ export interface CartDto extends Cart {
 }
 
 export interface AddToCartDto {
-  productItemId: number;
-  ingredients?: number[];
+  productItemId: string;
+  ingredients?: string[];
   quantity?: number;
 }

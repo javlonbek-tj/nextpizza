@@ -6,6 +6,7 @@ import {
   RegisterValues,
 } from '@/components/modals/auth-modal/forms/schemas';
 import prisma from '@/prisma/prisma-client';
+import { createVerificationCode } from '@/lib/auth/create-verification-code';
 
 export async function registerAction(values: RegisterValues) {
   const parsed = registerSchema.safeParse(values);
@@ -14,7 +15,7 @@ export async function registerAction(values: RegisterValues) {
     return { error: 'Invalid input data' };
   }
 
-  const { fullName, email, password } = parsed.data;
+  const { name, email, password } = parsed.data;
 
   try {
     // 1. Check if user already exists
@@ -23,25 +24,33 @@ export async function registerAction(values: RegisterValues) {
     });
 
     if (existingUser) {
-      return { error: 'User with this email already exists' };
+      return {
+        success: false,
+        error: 'Пользователь уже существует',
+      };
     }
 
     // 2. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // 3. Save to database
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
-        fullName,
+        name,
         email,
         password: hashedPassword,
       },
     });
 
-    return { success: `Welcome, ${fullName}! Registration successful.` };
+    await createVerificationCode(user.id, email);
+
+    return {
+      success: true,
+      userId: user.id,
+    };
   } catch (err) {
     // TODO REMOVE IN PRODUCTION
     console.error(err);
-    return { error: 'Something went wrong. Please try again.' };
+    return { success: false, error: 'Произошла ошибка. Попробуйте ещё раз' };
   }
 }

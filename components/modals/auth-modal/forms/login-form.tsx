@@ -14,10 +14,24 @@ import {
 import { loginSchema, LoginValues } from './schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { loginAction } from '@/app/actions/login';
+import { VerifyModal } from '../../Verify-modal';
 
-export function LoginForm() {
+interface Props {
+  onClose?: () => void;
+}
+
+export function LoginForm({ onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [verificationData, setVerificationData] = useState<{
+    userId: string;
+    email: string;
+  } | null>(null);
+
+  const router = useRouter();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -32,81 +46,125 @@ export function LoginForm() {
     setError(null);
 
     try {
+      // 1) Pre-check credentials with server action
+      const pre = await loginAction(values);
+
+      if (!pre.success) {
+        if (pre.needsVerification && pre.userId) {
+          // Show verification modal instead of redirecting
+          setVerificationData({
+            userId: pre.userId,
+            email: values.email,
+          });
+          setShowVerifyModal(true);
+          return;
+        }
+
+        setError(pre.error ?? 'Неверный email или пароль');
+        return;
+      }
+
+      // 2) If pre-check succeeded, call next-auth signIn to establish session
       const result = await signIn('credentials', {
         email: values.email,
         password: values.password,
-        redirect: false, // Don't redirect automatically
+        redirect: false,
       });
 
       if (result?.error) {
         if (result.error === 'CredentialsSignin') {
-          setError('Invalid email or password.');
+          setError('Неверный email или пароль');
         } else {
-          setError('An error occurred. Please try again.');
+          setError('Произошла ошибка. Пожалуйста, попробуйте ещё раз.');
         }
         return;
       }
 
       if (result?.ok) {
-        // Redirect to the homepage or a specific page after successful login
-        window.location.href = '/';
+        onClose?.();
+        router.push('/');
+        router.refresh();
       }
     } catch (error) {
       // TODO REMOVE IN PRODUCTION
       console.error('Error [LOGIN]', error);
-      setError('An error occurred. Please try again.');
+      setError('Произошла ошибка. Пожалуйста, попробуйте ещё раз.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleVerifyModalClose = () => {
+    setShowVerifyModal(false);
+    setVerificationData(null);
+  };
+
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 mx-auto w-90"
-      >
-        {/* Email */}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="you@example.com" type="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Password */}
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input placeholder="******" type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="submit"
-          className="w-full cursor-pointer"
-          disabled={isSubmitting}
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 mx-auto w-90"
         >
-          {isSubmitting ? <Loader className="w-5 h-5 animate-spin" /> : 'Войти'}
-        </Button>
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="you@example.com"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        {/* Messages */}
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      </form>
-    </Form>
+          {/* Password */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="******" type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type="submit"
+            className="w-full cursor-pointer"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <Loader className="w-5 h-5 animate-spin" />
+            ) : (
+              'Войти'
+            )}
+          </Button>
+
+          {/* Messages */}
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        </form>
+      </Form>
+
+      {/* Verification Modal */}
+      <VerifyModal
+        open={showVerifyModal}
+        onClose={handleVerifyModalClose}
+        onAuthSuccess={onClose}
+        userId={verificationData?.userId || ''}
+        email={verificationData?.email}
+      />
+    </>
   );
 }

@@ -14,12 +14,12 @@ interface ReturnProps {
   size: PizzaSize;
   setSize: (size: PizzaSize) => void;
   allPizzaSizes: Variant[];
-  selectedIngredients: Set<number>;
-  addIngredient: (id: number) => void;
+  selectedIngredients: Set<string>;
+  addIngredient: (id: string) => void;
   description: string;
   hasValidPizzaItems: boolean;
   error?: string;
-  selectedPizzaItemId: number | null;
+  selectedPizzaItemId: string | null;
   totalPrice: number;
 }
 
@@ -37,7 +37,7 @@ export const usePizzaOptions = (product: ProductWithRelations): ReturnProps => {
   const [type, setType] = useState<PizzaType>(defaultType);
   const [size, setSize] = useState<PizzaSize>(defaultSize);
   const [selectedIngredients, { toggle: addIngredient }] = useSet(
-    new Set<number>([])
+    new Set<string>([])
   );
 
   const availableSizes = validPizzaItems

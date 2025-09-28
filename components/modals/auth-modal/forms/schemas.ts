@@ -16,7 +16,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = loginSchema
   .extend({
-    fullName: z
+    name: z
       .string()
       .trim()
       .min(1, 'Full name is required')

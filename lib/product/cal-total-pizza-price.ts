@@ -7,7 +7,7 @@ export const totalPizzaPrice = (
   ingredients: Ingredient[],
   type: PizzaType,
   size: PizzaSize,
-  selectedIngredients: Set<number>
+  selectedIngredients: Set<string>
 ) => {
   const pizzaPrice = new Decimal(
     items.find((item) => item.pizzaType === type && item.size === size)

@@ -1,5 +1,5 @@
 export interface CartItemModel {
-  id: number;
+  id: string;
   name: string;
   pizzaType?: number | null;
   pizzaSize?: number | null;

@@ -7,7 +7,7 @@ interface Props {
   className?: string;
   ingredient: Ingredient;
   active?: boolean;
-  selectedIngredients: Set<number>;
+  selectedIngredients: Set<string>;
   onClick: () => void;
 }
 
@@ -27,8 +27,8 @@ export function IngredientItem({
       onClick={onClick}
     >
       {active && (
-        <span className='top-2 right-2 absolute flex justify-center items-center border border-primary rounded-full w-5 h-5'>
-          <Check className='w-4 h-4 text-primary' />
+        <span className="top-2 right-2 absolute flex justify-center items-center border border-primary rounded-full w-5 h-5">
+          <Check className="w-4 h-4 text-primary" />
         </span>
       )}
       <Image
@@ -37,8 +37,8 @@ export function IngredientItem({
         height={60}
         alt={ingredient.name}
       />
-      <p className='text-center leading-none'>{ingredient.name}</p>
-      <p className='mt-auto'>{ingredient.price} ₽</p>
+      <p className="text-center leading-none">{ingredient.name}</p>
+      <p className="mt-auto">{ingredient.price} ₽</p>
     </div>
   );
 }

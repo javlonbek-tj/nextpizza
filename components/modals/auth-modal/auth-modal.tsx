@@ -11,6 +11,7 @@ import { RegisterForm } from './forms/register-form';
 import { Button } from '@/components/ui/button';
 import { AuthSwitch } from './auth-switch';
 import { DEFAULT_LOGIN_REDIRECT } from '@/auth/routes';
+import { Loader } from 'lucide-react';
 
 interface Props {
   open: boolean;
@@ -43,48 +44,52 @@ export function AuthModal({ open, onClose }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='bg-white p-7 w-[450px]'>
+      <DialogContent className="bg-white p-7 w-[450px]">
         <div className={isLoading ? 'opacity-50 pointer-events-none' : ''}>
-          <DialogTitle className='font-semibold text-xl text-center'>
+          <DialogTitle className="font-semibold text-xl text-center">
             {type === 'login' ? 'Войти' : 'Регистрация'}
           </DialogTitle>
 
-          {type === 'login' ? <LoginForm /> : <RegisterForm />}
+          {type === 'login' ? (
+            <LoginForm onClose={onClose} />
+          ) : (
+            <RegisterForm onClose={onClose} />
+          )}
 
-          <hr className='my-3' />
+          <hr className="my-3" />
 
-          <div className='flex gap-2'>
+          <div className="flex gap-2">
             <Button
-              variant='secondary'
+              variant="secondary"
               onClick={() => onClick('google')}
-              type='button'
+              type="button"
               disabled={isLoading}
-              className='flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer'
+              className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
             >
               {loadingProvider === 'google' ? (
-                <span className='animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full' />
+                <Loader className="w-5 h-5 animate-spin" />
               ) : (
-                <FcGoogle className='w-6 h-6' />
+                <FcGoogle className="w-6 h-6" />
               )}
               Google
             </Button>
             <Button
-              variant='secondary'
+              variant="secondary"
               onClick={() => onClick('github')}
-              type='button'
+              type="button"
               disabled={isLoading}
-              className='flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer'
+              className="flex-1 gap-2 p-2 h-10 text-amber-950 cursor-pointer"
             >
               {loadingProvider === 'github' ? (
-                <span className='animate-spin w-5 h-5 border-2 border-current border-t-transparent rounded-full' />
+                <Loader className="w-5 h-5 animate-spin" />
               ) : (
-                <FaGithub className='w-6 h-6' />
+                <FaGithub className="w-6 h-6" />
               )}
               GitHub
             </Button>
           </div>
 
-          <AuthSwitch type={type} onSwitch={onSwitchType} className='mt-4' />
+          <AuthSwitch type={type} onSwitch={onSwitchType} className="mt-4" />
         </div>
       </DialogContent>
     </Dialog>
