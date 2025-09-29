@@ -10,7 +10,7 @@ export default function CheckoutLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <main className='min-h-screen bg-[#F4F1EE]'>
+    <main className="bg-[#F4F1EE] min-h-screen">
       <Header hasSearch={false} hasCartBtn={false} />
       {children}
     </main>

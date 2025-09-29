@@ -13,7 +13,7 @@ export default async function HomeLayout({
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   const session = await auth();
   return (
-    <main className='min-h-screen'>
+    <main className="min-h-screen">
       <Header session={session} />
       {children}
       {modal}
