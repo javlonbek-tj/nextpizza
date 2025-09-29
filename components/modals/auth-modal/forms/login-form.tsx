@@ -16,28 +16,23 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { loginAction } from '@/app/actions/login';
-import { VerifyModal } from '../../Verify-modal';
 
 interface Props {
-  onClose?: () => void;
+  onClose: () => void;
+  onNeedsVerification: (data: { userId: string; email: string }) => void;
 }
 
-export function LoginForm({ onClose }: Props) {
+export function LoginForm({ onClose, onNeedsVerification }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showVerifyModal, setShowVerifyModal] = useState(false);
-  const [verificationData, setVerificationData] = useState<{
-    userId: string;
-    email: string;
-  } | null>(null);
 
   const router = useRouter();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'test@gmail.com',
+      password: '123456',
     },
   });
 
@@ -51,12 +46,11 @@ export function LoginForm({ onClose }: Props) {
 
       if (!pre.success) {
         if (pre.needsVerification && pre.userId) {
-          // Show verification modal instead of redirecting
-          setVerificationData({
+          onNeedsVerification({
             userId: pre.userId,
             email: values.email,
           });
-          setShowVerifyModal(true);
+          setIsSubmitting(false);
           return;
         }
 
@@ -94,29 +88,24 @@ export function LoginForm({ onClose }: Props) {
     }
   };
 
-  const handleVerifyModalClose = () => {
-    setShowVerifyModal(false);
-    setVerificationData(null);
-  };
-
   return (
     <>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 mx-auto w-90"
+          className='space-y-4 mx-auto w-90'
         >
           {/* Email */}
           <FormField
             control={form.control}
-            name="email"
+            name='email'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="you@example.com"
-                    type="email"
+                    placeholder='you@example.com'
+                    type='email'
                     {...field}
                   />
                 </FormControl>
@@ -128,12 +117,12 @@ export function LoginForm({ onClose }: Props) {
           {/* Password */}
           <FormField
             control={form.control}
-            name="password"
+            name='password'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" type="password" {...field} />
+                  <Input placeholder='******' type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -141,30 +130,21 @@ export function LoginForm({ onClose }: Props) {
           />
 
           <Button
-            type="submit"
-            className="w-full cursor-pointer"
+            type='submit'
+            className='w-full cursor-pointer'
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Loader className="w-5 h-5 animate-spin" />
+              <Loader className='w-5 h-5 animate-spin' />
             ) : (
               'Войти'
             )}
           </Button>
 
           {/* Messages */}
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
         </form>
       </Form>
-
-      {/* Verification Modal */}
-      <VerifyModal
-        open={showVerifyModal}
-        onClose={handleVerifyModalClose}
-        onAuthSuccess={onClose}
-        userId={verificationData?.userId || ''}
-        email={verificationData?.email}
-      />
     </>
   );
 }

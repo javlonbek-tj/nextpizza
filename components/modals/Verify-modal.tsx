@@ -130,57 +130,57 @@ export function VerifyModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="bg-white p-7 w-[450px]">
+      <DialogContent className='bg-white p-7 w-[450px]'>
         <div className={isLoading ? 'opacity-50 pointer-events-none' : ''}>
-          <div className="mb-6 text-center">
-            <div className="flex justify-center items-center bg-blue-100 mx-auto mb-4 rounded-full w-12 h-12">
-              <Mail className="w-6 h-6 text-blue-600" />
+          <div className='mb-6 text-center'>
+            <div className='flex justify-center items-center bg-blue-100 mx-auto mb-4 rounded-full w-12 h-12'>
+              <Mail className='w-6 h-6 text-blue-600' />
             </div>
-            <DialogTitle className="mb-2 font-semibold text-xl text-center">
+            <DialogTitle className='mb-2 font-semibold text-xl text-center'>
               Подтвердите email
             </DialogTitle>
-            <p className="text-gray-600 text-sm">
+            <p className='text-gray-600 text-sm'>
               Мы отправили 6-значный код на
               {email && (
-                <span className="block mt-1 font-medium text-gray-800">
+                <span className='block mt-1 font-medium text-gray-800'>
                   {email}
                 </span>
               )}
             </p>
           </div>
 
-          <form onSubmit={handleVerify} className="space-y-4">
+          <form onSubmit={handleVerify} className='space-y-4'>
             <div>
               <Input
-                type="text"
+                type='text'
                 maxLength={6}
                 value={code}
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-                className="h-14 font-mono text-2xl text-center tracking-widest"
-                placeholder="000000"
-                autoComplete="off"
+                className='h-14 font-mono text-2xl text-center tracking-widest'
+                placeholder='000000'
+                autoComplete='off'
               />
             </div>
 
-            <div className="text-sm text-center">
+            <div className='text-sm text-center'>
               {isVerified ? (
-                <p className="flex justify-center items-center gap-2 font-medium text-green-600">
-                  <CheckCircle className="w-5 h-5" />
+                <p className='flex justify-center items-center gap-2 font-medium text-green-600'>
+                  <CheckCircle className='w-5 h-5' />
                   <span>Email подтвержден!</span>
                 </p>
               ) : !canResend ? (
-                <p className="text-gray-600">
+                <p className='text-gray-600'>
                   Код истекает через:{' '}
-                  <span className="font-mono font-bold text-red-600">
+                  <span className='font-mono font-bold text-red-600'>
                     {formatTime(timeLeft)}
                   </span>
                 </p>
               ) : (
                 <button
-                  type="button"
+                  type='button'
                   onClick={handleResend}
                   disabled={isResending}
-                  className="disabled:opacity-50 font-medium text-blue-600 hover:text-blue-700"
+                  className='disabled:opacity-50 font-medium text-blue-600 hover:text-blue-700'
                 >
                   {isResending ? 'Отправка...' : 'Отправить код повторно'}
                 </button>
@@ -188,13 +188,13 @@ export function VerifyModal({
             </div>
 
             <Button
-              type="submit"
+              type='submit'
               disabled={isLoading || code.length !== 6}
-              className="w-full h-12"
+              className='w-full h-12'
             >
               {isLoading ? (
                 <>
-                  <Loader className="mr-2 w-4 h-4 animate-spin" />
+                  <Loader className='mr-2 w-4 h-4 animate-spin' />
                   Проверка...
                 </>
               ) : (

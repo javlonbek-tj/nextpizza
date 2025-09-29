@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { ProfileDropdown } from './Profile-dropdown';
 
 interface Props {
-  session: Session | null;
+  session?: Session;
   onClickSignIn?: () => void;
 }
 
@@ -15,8 +15,8 @@ export function ProfileButton({ session, onClickSignIn }: Props) {
     <>
       {!isAuthenticated ? (
         <Button
-          variant="outline"
-          className="flex items-center gap-2 w-[100px] transition duration-300 cursor-pointer"
+          variant='outline'
+          className='flex items-center gap-2 w-[100px] transition duration-300 cursor-pointer'
           onClick={onClickSignIn}
         >
           <User size={18} />

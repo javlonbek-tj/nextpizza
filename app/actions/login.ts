@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/prisma/prisma-client';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { createVerificationCode } from '@/lib/auth/create-verification-code';
 import { loginSchema } from '@/components/modals/auth-modal/forms/schemas';
 

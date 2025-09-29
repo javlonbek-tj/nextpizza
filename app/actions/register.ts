@@ -1,6 +1,6 @@
 'use server';
 
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import {
   registerSchema,
   RegisterValues,
@@ -45,8 +45,10 @@ export async function registerAction(values: RegisterValues) {
     await createVerificationCode(user.id, email);
 
     return {
-      success: true,
+      success: false, // user is not logged in yet
+      needsVerification: true,
       userId: user.id,
+      email: user.email,
     };
   } catch (err) {
     // TODO REMOVE IN PRODUCTION
