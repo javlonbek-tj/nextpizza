@@ -4,10 +4,10 @@ import { Metadata } from 'next';
 import { SimpleHeader } from '@/components/header/Simple-header';
 
 export const metadata: Metadata = {
-  title: 'Checkout',
+  title: 'Dashboard',
 };
 
-export default function CheckoutLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (

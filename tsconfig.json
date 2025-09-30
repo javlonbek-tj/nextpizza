@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "prisma/@types/*.d.ts",
-    "@auth/*.d.ts"
+    "@auth/*.d.ts",
+    "next.config.ts"
   ],
   "exclude": ["node_modules"]
 }

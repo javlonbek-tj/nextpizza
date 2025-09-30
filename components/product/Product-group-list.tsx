@@ -11,7 +11,7 @@ import { useCategoryStore } from '@/store/category';
 interface Props {
   className?: string;
   categoryTitle: string;
-  categoryId: number;
+  categoryId: string;
   listClassName?: string;
   products: ProductWithRelations[];
 }

@@ -1,12 +1,13 @@
-import { Header } from '@/components/shared';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import React from 'react';
+import Link from 'next/link';
+import { Metadata } from 'next';
 import { ArrowLeft } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
+import { SimpleHeader } from '@/components/header/Simple-header';
+
 export const metadata: Metadata = {
-  title: 'Главная',
+  title: 'Логин',
 };
 
 export default function HomeLayout({
@@ -14,9 +15,8 @@ export default function HomeLayout({
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
-    <main className='min-h-screen'>
-      <Header hasCartBtn={false} hasSearch={false} />
-
+    <main className='bg-[#F4F1EE] min-h-screen'>
+      <SimpleHeader />
       <div className='flex justify-center py-6'>
         <Button asChild variant='outline' className='px-6'>
           <Link href='/'>
@@ -24,7 +24,6 @@ export default function HomeLayout({
           </Link>
         </Button>
       </div>
-
       {children}
       {modal}
     </main>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
@@ -26,44 +26,106 @@ export function PriceRange({
 }: Props) {
   const [range, setRange] = useState<[number, number]>(value);
 
+  useEffect(() => {
+    setRange(value);
+  }, [value]);
+
   const handleSliderChange = (value: number[]) => {
-    setRange([value[0], value[1]]);
-    onValueChange([value[0], value[1]]);
+    const newRange: [number, number] = [value[0], value[1]];
+    setRange(newRange);
+    onValueChange(newRange);
   };
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMin = Number(e.target.value) || 0;
-    setRange([Math.min(newMin, range[1]), range[1]]);
-    onValueChange([Math.min(newMin, range[1]), range[1]]);
+    const inputValue = e.target.value;
+
+    // Allow empty input for better UX
+    if (inputValue === '') {
+      setRange([min, range[1]]);
+      return;
+    }
+
+    let newMin = Number(inputValue);
+
+    // Prevent invalid numbers
+    if (isNaN(newMin)) return;
+
+    // Clamp between min and max
+    newMin = Math.max(min, Math.min(newMin, max));
+
+    // Ensure min doesn't exceed current max
+    newMin = Math.min(newMin, range[1]);
+
+    const newRange: [number, number] = [newMin, range[1]];
+    setRange(newRange);
+    onValueChange(newRange);
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMax = Number(e.target.value) || 0;
-    setRange([range[0], Math.max(newMax, range[0])]);
-    onValueChange([range[0], Math.max(newMax, range[0])]);
+    const inputValue = e.target.value;
+
+    // Allow empty input for better UX
+    if (inputValue === '') {
+      setRange([range[0], max]);
+      return;
+    }
+
+    let newMax = Number(inputValue);
+
+    // Prevent invalid numbers
+    if (isNaN(newMax)) return;
+
+    // Clamp between min and max - THIS IS KEY
+    newMax = Math.max(min, Math.min(newMax, max));
+
+    // Ensure max doesn't go below current min
+    newMax = Math.max(newMax, range[0]);
+
+    const newRange: [number, number] = [range[0], newMax];
+    setRange(newRange);
+    onValueChange(newRange);
+  };
+
+  // Handle blur to ensure valid values
+  const handleMinBlur = () => {
+    if (range[0] < min || isNaN(range[0])) {
+      const newRange: [number, number] = [min, range[1]];
+      setRange(newRange);
+      onValueChange(newRange);
+    }
+  };
+
+  const handleMaxBlur = () => {
+    if (range[1] > max || isNaN(range[1])) {
+      const newRange: [number, number] = [range[0], max];
+      setRange(newRange);
+      onValueChange(newRange);
+    }
   };
 
   return (
     <div className={cn(className)}>
       {title && <p className='text-md font-bold'>{title}:</p>}
-
       <div className='flex items-center gap-2 mt-3 mb-5'>
         <Input
           type='number'
           value={range[0]}
           onChange={handleMinChange}
+          onBlur={handleMinBlur}
           min={min}
           max={range[1]}
+          step={step}
         />
         <Input
           type='number'
           value={range[1]}
           onChange={handleMaxChange}
+          onBlur={handleMaxBlur}
           min={range[0]}
           max={max}
+          step={step}
         />
       </div>
-
       <div className='relative mt-6'>
         <Slider
           min={min}
@@ -73,7 +135,6 @@ export function PriceRange({
           onValueChange={handleSliderChange}
           className='w-full'
         />
-
         {/* Floating labels */}
         <div className='absolute -bottom-6 left-0 w-full flex justify-between px-1'>
           <span className='text-sm text-gray-600'>{range[0]}</span>

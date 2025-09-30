@@ -1,5 +1,4 @@
-import { auth } from '@/auth/auth';
-import { Header } from '@/components/shared';
+import { HomeHeader } from '@/components/header';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -7,14 +6,13 @@ export const metadata: Metadata = {
   title: 'Главная',
 };
 
-export default async function HomeLayout({
+export default function HomeLayout({
   children,
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
-  const session = await auth();
   return (
-    <main className="min-h-screen">
-      <Header session={session} />
+    <main className='min-h-screen'>
+      <HomeHeader />
       {children}
       {modal}
     </main>

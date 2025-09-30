@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSet } from 'react-use';
 import qs from 'qs';
@@ -12,6 +12,7 @@ interface PriceProps {
 export function useFilterState() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const [ingredientsIds, { toggle: toggleIngredient }] = useSet(
     new Set<string>(
@@ -60,7 +61,10 @@ export function useFilterState() {
     }
 
     const query = qs.stringify(params, { skipNulls: true });
-    router.push(`?${query}`, { scroll: false });
+
+    startTransition(() => {
+      router.push(`?${query}`, { scroll: false });
+    });
   }, [ingredientsIds, pizzaTypes, pizzaSize, prices, router]);
 
   useEffect(() => {
@@ -83,5 +87,6 @@ export function useFilterState() {
     togglePizzaSize,
     prices,
     handlePriceChange,
+    isPending,
   };
 }

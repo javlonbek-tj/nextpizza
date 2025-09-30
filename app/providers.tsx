@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             },
           }}
         />
-        <NextTopLoader />
+        <NextTopLoader color='oklch(0.646 0.222 41.116)' />
       </QueryClientProvider>
     </>
   );

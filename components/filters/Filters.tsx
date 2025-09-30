@@ -1,4 +1,5 @@
 'use client';
+
 import { cn } from '@/lib';
 import { Title } from '../shared/Title';
 import { FilterCheckboxGroup } from './Filter-checkbox-group';
@@ -6,6 +7,7 @@ import { PriceRange } from './Price-range';
 import { DEFAULT_PRICE_FROM, DEFAULT_PRICE_TO } from '@/constants';
 import { useFilterState } from '../hooks';
 import { useIngredients } from '../hooks';
+import { FilterLoading } from './Filter-loading';
 
 interface Props {
   className?: string;
@@ -21,12 +23,19 @@ export function Filters({ className }: Props) {
     togglePizzaSize,
     prices,
     handlePriceChange,
+    isPending,
   } = useFilterState();
 
-  const { options, isPending, isError } = useIngredients();
+  const {
+    options,
+    isPending: isIngredientsLoading,
+    isError,
+  } = useIngredients();
 
   return (
-    <div className={cn(className)}>
+    <div className={cn('relative', className)}>
+      {isPending && <FilterLoading />}
+
       <Title text='Фильтрация' size='sm' className='mb-5 font-bold' />
 
       <FilterCheckboxGroup
@@ -67,7 +76,7 @@ export function Filters({ className }: Props) {
         onValueChange={handlePriceChange}
       />
 
-      {!isPending && !isError && options.length > 0 && (
+      {!isIngredientsLoading && !isError && options.length > 0 && (
         <FilterCheckboxGroup
           options={options}
           name='ingredients'
@@ -79,7 +88,7 @@ export function Filters({ className }: Props) {
         />
       )}
 
-      {isPending && (
+      {isIngredientsLoading && (
         <div className='mb-5'>
           <Title text='Ингредиенты' size='sm' className='mb-3 font-bold' />
           <div className='animate-pulse space-y-2'>

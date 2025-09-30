@@ -10,7 +10,7 @@ import { LoginForm } from './forms/login-form';
 import { RegisterForm } from './forms/register-form';
 import { Button } from '@/components/ui/button';
 import { AuthSwitch } from './auth-switch';
-import { DEFAULT_LOGIN_REDIRECT } from '@/auth/routes';
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { Loader } from 'lucide-react';
 import { VerifyModal } from '../Verify-modal';
 
