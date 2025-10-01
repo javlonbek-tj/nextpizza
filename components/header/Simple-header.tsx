@@ -5,7 +5,7 @@ export async function SimpleHeader() {
   const session = await auth();
   return (
     <Header
-      key='simple-header'
+      key="simple-header"
       hasSearch={false}
       hasCartBtn={false}
       session={session}

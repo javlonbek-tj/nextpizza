@@ -6,7 +6,7 @@ import {
   RegisterValues,
 } from '@/components/modals/auth-modal/forms/schemas';
 import prisma from '@/prisma/prisma-client';
-import { createVerificationCode } from '@/lib/auth/create-verification-code';
+import { createVerificationCode } from '@/lib/verify-email/create-verification-code';
 
 export async function registerAction(values: RegisterValues) {
   const parsed = registerSchema.safeParse(values);

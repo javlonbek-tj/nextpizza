@@ -7,6 +7,8 @@ import {
   publicRoutes,
 } from './routes';
 
+// MIDDLEWARE IS NOT WORKING HERE
+
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {

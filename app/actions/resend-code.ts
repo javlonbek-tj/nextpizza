@@ -1,7 +1,7 @@
 // app/actions/resend-code.ts
 'use server';
 
-import { createVerificationCode } from '@/lib/auth/create-verification-code';
+import { createVerificationCode } from '@/lib/verify-email/create-verification-code';
 import prisma from '@/prisma/prisma-client';
 
 export async function resendCodeAction(userId: string) {

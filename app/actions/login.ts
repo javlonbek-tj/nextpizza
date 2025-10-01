@@ -2,7 +2,7 @@
 
 import prisma from '@/prisma/prisma-client';
 import bcrypt from 'bcryptjs';
-import { createVerificationCode } from '@/lib/auth/create-verification-code';
+import { createVerificationCode } from '@/lib/verify-email/create-verification-code';
 import { loginSchema } from '@/components/modals/auth-modal/forms/schemas';
 
 export async function loginAction(values: unknown) {
