@@ -47,19 +47,45 @@ path.join(process.cwd(), "lib/generated/prisma/query_engine-windows.dll.node")
  */
 export type User = Prisma.UserModel
 /**
- * Model Session
- * 
- */
-export type Session = Prisma.SessionModel
-/**
  * Model Account
  * 
  */
 export type Account = Prisma.AccountModel
 /**
- * Model Verification
+ * Model Product
  * 
  */
-export type Verification = Prisma.VerificationModel
+export type Product = Prisma.ProductModel
+/**
+ * Model ProductItem
+ * 
+ */
+export type ProductItem = Prisma.ProductItemModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Ingredient
+ * 
+ */
+export type Ingredient = Prisma.IngredientModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = Prisma.CartItemModel
+/**
+ * Model VerificationCode
+ * 
+ */
+export type VerificationCode = Prisma.VerificationCodeModel
 
-
+export type UserRole = $Enums.UserRole
+export const UserRole = $Enums.UserRole
